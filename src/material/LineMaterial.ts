@@ -77,7 +77,7 @@ const vertex = /*glsl*/`#version 300 es
 // an attribute is an input (in) to a vertex shader.
 // It will receive data from a buffer
 in vec4 a_position;
-in mat4 u_camera;
+uniform mat4 u_camera;
  
 // all shaders have a main function
 void main() {
