@@ -7,7 +7,6 @@ import { Material } from "./Material"
 
 export class LineMaterial extends Material {
 
-    protected readonly vao: WebGLVertexArrayObject
     protected readonly indexBuffer: WebGLBuffer
 
     protected readonly cameraLocation: WebGLUniformLocation | null
@@ -22,21 +21,12 @@ export class LineMaterial extends Material {
 
         super(context, shader)
 
-        this.indexBuffer = context.createBuffer()
-
-        // Initializing VAO
-        this.vao = context.createVertexArray()
-        context.bindVertexArray(this.vao)
-
         // Get all locations
         this.cameraLocation = this.shader.getUniformLocation("u_camera")
         this.positionLocation = this.shader.getAttributeLocation("a_position")
 
-        // Binding position attribute
+        this.indexBuffer = context.createBuffer()
         this.positionBuffer = context.createBuffer()
-        context.bindBuffer(context.ARRAY_BUFFER, this.positionBuffer)
-        context.enableVertexAttribArray(this.positionLocation)
-        context.vertexAttribPointer(this.positionLocation, Vec3.size, context.FLOAT, false, 0, 0)
     }
 
     override draw(camera: Camera, geometry: Geometry): void {
@@ -54,16 +44,15 @@ export class LineMaterial extends Material {
             this.context.STATIC_DRAW
         )
         
-        // Bind VAO
-        this.context.bindVertexArray(this.vao)
-
         // Load arrayBuffer
+        this.context.enableVertexAttribArray(this.positionLocation)
         this.context.bindBuffer(this.context.ARRAY_BUFFER, this.positionBuffer)
         this.context.bufferData(
             this.context.ARRAY_BUFFER,
             geometry.positions,
             this.context.STATIC_DRAW
         )
+        this.context.vertexAttribPointer(this.positionLocation, Vec3.size, this.context.FLOAT, false, 0, 0)
 
         // Draw elements
         const primitiveType = geometry.primitive
@@ -71,6 +60,8 @@ export class LineMaterial extends Material {
         const offset = 0
         const count = geometry.count
 
+        this.context.lineWidth(1)
+        
         this.context.drawElements(
             primitiveType,
             count,

@@ -12,22 +12,21 @@ export class Geometry {
         }
 
         const positions = new Float32Array(vertexCount * Vec3.size)
-        const indices = new Uint16Array(lineCount)
+        const indices = new Uint16Array(lineCount * 2)
 
         let positionI = 0
         let indexI = 0
 
         for (const line of lines) {
             for (let i = 0; i < line.length; i++) {
-                positions.set(line[i].buffer, (positionI + i) * Vec3.size)
+                positions.set(line[i].buffer, positionI * Vec3.size)
                 if (i > 0) {
                     // add line
                     indices.set([positionI - 1, positionI], indexI + i - 1)
+                    indexI += 2
                 }
+                positionI++
             }
-
-            positionI += line.length
-            indexI += line.length - 1
         }
 
         return new Geometry(positions, indices)
@@ -41,7 +40,8 @@ export class Geometry {
         readonly positions: Float32Array,
         readonly indices: Uint16Array
     ) {
-        this.count = indices.length / 2
+        this.count = indices.length
+        console.log('Built geometry', { positions, indices })
     }
 
 }

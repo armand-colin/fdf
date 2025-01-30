@@ -8,7 +8,9 @@ export abstract class Material {
     constructor(
         protected readonly context: Context,
         protected readonly shader: Shader
-    ) {  }
+    ) {
+        shader.bind()
+    }
 
     abstract draw(camera: Camera, geometry: Geometry): void
 

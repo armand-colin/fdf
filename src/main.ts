@@ -11,6 +11,7 @@ async function main() {
     const context = canvas.getContext("webgl2")!
 
     const renderer = new Renderer(canvas, context)
+
     // Fits the viewport
     renderer.fit()
 
@@ -19,8 +20,8 @@ async function main() {
 
     const object = new Object(
         Geometry.fromLines([[
-            new Vec3(0, 0), 
-            new Vec3(0, 1)
+            new Vec3(0, 0),
+            new Vec3(0.5, 0.5)
         ]]),
         new LineMaterial(context)
     )
