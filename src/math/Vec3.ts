@@ -33,4 +33,12 @@ export class Vec3 {
         this.buffer[2] = value
     }
 
+    inverse(target = new Vec3()) {
+        target.x = -1 * this.x
+        target.y = -1 * this.y
+        target.z = -1 * this.z
+
+        return target
+    }
+
 }

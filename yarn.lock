@@ -127,6 +127,13 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.24.2.tgz#34aa0b52d0fbb1a654b596acfa595f0c7b77a77b"
   integrity sha512-7VTgWzgMGvup6aSqDPLiW5zHaxYJGTO4OokMjIlrCtf+VpEL+cXKtCvg723iguPYI5oaUNdS+/V7OU2gvXVWEg==
 
+"@niloc/utils@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@niloc/utils/-/utils-0.0.11.tgz#73c7d6dbfcc76c277a3a6db0fbab2614585dbf37"
+  integrity sha512-bbfaenYEO6YIacg+QbSiKbsKsTVEdmPrdRMR8slvpGxVCy+w0zzvGFr8HDAjr3xmVS1jkRHGyfT7lST1gEAyQA==
+  dependencies:
+    nanoid "^3.3.6"
+
 "@rollup/rollup-android-arm-eabi@4.32.1":
   version "4.32.1"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.32.1.tgz#c18bad635ba24220a6c8cc427ab2cab12e1531a3"
@@ -263,7 +270,7 @@ fsevents@~2.3.2, fsevents@~2.3.3:
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
-nanoid@^3.3.8:
+nanoid@^3.3.6, nanoid@^3.3.8:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.8.tgz#b1be3030bee36aaff18bacb375e5cce521684baf"
   integrity sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==

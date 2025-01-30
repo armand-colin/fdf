@@ -36,6 +36,8 @@ export class Renderer {
         this.context.clearColor(0, 0, 0, 0)
         this.context.clear(this.context.COLOR_BUFFER_BIT)
 
+        camera.update()
+
         for (const object of scene.objects)
             object.material.draw(camera, object.geometry)
     }

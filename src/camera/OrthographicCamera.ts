@@ -2,19 +2,14 @@ import { Camera } from "./Camera";
 
 export class OrthographicCamera extends Camera {
 
-    constructor() {
+    constructor(canvas: HTMLCanvasElement) {
         super()
 
-        const width = 300
-        const height = 150
         const depth = 400
 
-        this.matrix.set(0, 2 / width)
-        this.matrix.set(5, 2 / height)
-        this.matrix.set(10, 2 / depth)
-
-        this.matrix.set(12, -1)
-        this.matrix.set(13, 1)
+        this.projection.set(0, 2 / canvas.width)
+        this.projection.set(5, 2 / canvas.height)
+        this.projection.set(10, 2 / depth)
     }
 
 }
