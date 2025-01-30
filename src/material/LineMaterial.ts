@@ -75,14 +75,9 @@ export class LineMaterial extends Material {
 const vertex = /*glsl*/`#version 300 es
  
 uniform mat4 u_camera;
-
 in vec4 a_position;
  
-// all shaders have a main function
 void main() {
- 
-  // gl_Position is a special variable a vertex shader
-  // is responsible for setting
   gl_Position = u_camera * a_position;
 }
 `

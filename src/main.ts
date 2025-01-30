@@ -20,8 +20,8 @@ async function main() {
 
     const object = new Object(
         Geometry.fromLines([[
-            new Vec3(100, 100, -100),
-            new Vec3(-1000, -1000, 100)
+            new Vec3(0, 0),
+            new Vec3(300, -150)
         ]]),
         new LineMaterial(context)
     )
