@@ -1,0 +1,1 @@
+export type Context = WebGL2RenderingContext
