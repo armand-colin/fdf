@@ -74,10 +74,9 @@ export class LineMaterial extends Material {
 
 const vertex = /*glsl*/`#version 300 es
  
-// an attribute is an input (in) to a vertex shader.
-// It will receive data from a buffer
-in vec4 a_position;
 uniform mat4 u_camera;
+
+in vec4 a_position;
  
 // all shaders have a main function
 void main() {

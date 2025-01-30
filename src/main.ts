@@ -1,4 +1,4 @@
-import { Camera } from "./camera/Camera"
+import { OrthographicCamera } from "./camera/OrthographicCamera"
 import { Geometry } from "./Geometry"
 import { LineMaterial } from "./material/LineMaterial"
 import { Vec3 } from "./math/Vec3"
@@ -15,13 +15,13 @@ async function main() {
     // Fits the viewport
     renderer.fit()
 
-    const camera = new Camera()
+    const camera = new OrthographicCamera()
     const scene = new Scene()
 
     const object = new Object(
         Geometry.fromLines([[
-            new Vec3(0, 0),
-            new Vec3(0.5, 0.5)
+            new Vec3(100, 100, -100),
+            new Vec3(-1000, -1000, 100)
         ]]),
         new LineMaterial(context)
     )

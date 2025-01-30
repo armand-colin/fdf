@@ -19,4 +19,8 @@ export class Mat4 {
         this.buffer = buffer
     }
 
+    set(i: number, value: number) {
+        this.buffer[i] = value
+    }
+
 }
