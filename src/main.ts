@@ -1,13 +1,10 @@
 import { Camera } from "./camera/Camera"
 import { Geometry } from "./Geometry"
-import { Material } from "./material/Material"
+import { LineMaterial } from "./material/LineMaterial"
 import { Vec3 } from "./math/Vec3"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
-import { Shader } from "./Shader"
-import { fragment } from "./shaders/fragment.glsl"
-import { vertex } from "./shaders/vertex.glsl"
 
 async function main() {
     const canvas = document.body.querySelector("canvas")!
@@ -17,8 +14,6 @@ async function main() {
     // Fits the viewport
     renderer.fit()
 
-    const shader = Shader.fromSource(context, vertex, fragment)!
-
     const camera = new Camera()
     const scene = new Scene()
 
@@ -27,7 +22,7 @@ async function main() {
             new Vec3(0, 0), 
             new Vec3(0, 1)
         ]]),
-        new Material(shader)
+        new LineMaterial(context)
     )
 
     scene.add(object)
