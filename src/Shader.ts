@@ -1,4 +1,5 @@
 import { Context } from "./Context";
+import { Mat4 } from "./math/Mat4";
 
 export class Shader {
 
@@ -56,11 +57,26 @@ export class Shader {
     }
 
     private _uniformLocations: Record<string, WebGLUniformLocation | null | undefined> = { }
+    private _attributeLocations: Record<string, GLint | undefined> = { }
 
     private constructor(
         protected readonly context: Context,
         protected readonly program: WebGLProgram,
     ) { }
+
+    bind() {
+        this.context.useProgram(this.program)
+    }
+
+    getAttributeLocation(name: string) {
+        if (this._attributeLocations[name] !== undefined)
+            return this._attributeLocations[name]
+
+        const location = this.context.getAttribLocation(this.program, name)
+        this._attributeLocations[name] = location
+
+        return location
+    }
 
     getUniformLocation(name: string) {
         if (this._uniformLocations[name] !== undefined)
@@ -70,6 +86,10 @@ export class Shader {
         this._uniformLocations[name] = location
 
         return location
+    }
+
+    setUniformMat4(location: WebGLUniformLocation | null, value: Mat4) {
+        this.context.uniformMatrix4fv(location, false, value.buffer)
     }
 
 }

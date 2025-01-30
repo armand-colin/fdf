@@ -1,5 +1,5 @@
 import { Geometry } from "./Geometry";
-import { Material } from "./Material";
+import { Material } from "./material/Material";
 
 export class Object {
 

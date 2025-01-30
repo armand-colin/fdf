@@ -1,6 +1,7 @@
 import { Camera } from "./camera/Camera"
 import { Geometry } from "./Geometry"
-import { Material } from "./Material"
+import { Material } from "./material/Material"
+import { Vec3 } from "./math/Vec3"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
@@ -22,7 +23,10 @@ async function main() {
     const scene = new Scene()
 
     const object = new Object(
-        new Geometry(),
+        Geometry.fromLines([[
+            new Vec3(0, 0), 
+            new Vec3(0, 1)
+        ]]),
         new Material(shader)
     )
 
@@ -32,5 +36,3 @@ async function main() {
 }
 
 main()
-
-console.log("hello")

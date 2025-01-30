@@ -1,0 +1,112 @@
+import { Camera } from "../camera/Camera"
+import { Context } from "../Context"
+import { Geometry } from "../Geometry"
+import { Vec3 } from "../math/Vec3"
+import { Shader } from "../Shader"
+import { Material } from "./Material"
+
+export class LineMaterial extends Material {
+
+    protected readonly vao: WebGLVertexArrayObject
+    protected readonly indexBuffer: WebGLBuffer
+
+    protected readonly cameraLocation: WebGLUniformLocation | null
+
+    protected readonly positionLocation: GLint
+    protected readonly positionBuffer: WebGLBuffer
+
+    constructor(context: Context) {
+        const shader = Shader.fromSource(context, vertex, fragment)
+        if (!shader)
+            throw new Error("Error while compiling shader")
+
+        super(context, shader)
+
+        this.indexBuffer = context.createBuffer()
+
+        // Initializing VAO
+        this.vao = context.createVertexArray()
+        context.bindVertexArray(this.vao)
+
+        // Get all locations
+        this.cameraLocation = this.shader.getUniformLocation("u_camera")
+        this.positionLocation = this.shader.getAttributeLocation("a_position")
+
+        // Binding position attribute
+        this.positionBuffer = context.createBuffer()
+        context.bindBuffer(context.ARRAY_BUFFER, this.positionBuffer)
+        context.enableVertexAttribArray(this.positionLocation)
+        context.vertexAttribPointer(this.positionLocation, Vec3.size, context.FLOAT, false, 0, 0)
+    }
+
+    override draw(camera: Camera, geometry: Geometry): void {
+        // Bind shader
+        this.shader.bind()
+
+        // Load camera data
+        this.shader.setUniformMat4(this.cameraLocation, camera.matrix)
+
+        // Load indexBuffer
+        this.context.bindBuffer(this.context.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
+        this.context.bufferData(
+            this.context.ELEMENT_ARRAY_BUFFER,
+            geometry.indices,
+            this.context.STATIC_DRAW
+        )
+        
+        // Bind VAO
+        this.context.bindVertexArray(this.vao)
+
+        // Load arrayBuffer
+        this.context.bindBuffer(this.context.ARRAY_BUFFER, this.positionBuffer)
+        this.context.bufferData(
+            this.context.ARRAY_BUFFER,
+            geometry.positions,
+            this.context.STATIC_DRAW
+        )
+
+        // Draw elements
+        const primitiveType = geometry.primitive
+        const indexType = geometry.indexType
+        const offset = 0
+        const count = geometry.count
+
+        this.context.drawElements(
+            primitiveType,
+            count,
+            indexType,
+            offset
+        )
+    }
+
+}
+
+const vertex = /*glsl*/`#version 300 es
+ 
+// an attribute is an input (in) to a vertex shader.
+// It will receive data from a buffer
+in vec4 a_position;
+ 
+// all shaders have a main function
+void main() {
+ 
+  // gl_Position is a special variable a vertex shader
+  // is responsible for setting
+  gl_Position = a_position;
+}
+`
+
+const fragment = /*glsl*/`#version 300 es
+ 
+// fragment shaders don't have a default precision so we need
+// to pick one. highp is a good default. It means "high precision"
+precision highp float;
+ 
+// we need to declare an output for the fragment shader
+out vec4 outColor;
+ 
+void main() {
+  // Just set the output to a constant reddish-purple
+  outColor = vec4(1, 0, 0.5, 1);
+}
+`
