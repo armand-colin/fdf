@@ -1,8 +1,21 @@
+import { Mathf } from "./Mathf"
+
 export class Vec3 {
 
     readonly buffer: Float32Array
 
     static readonly size = 3
+
+    static lerp(a: Vec3, b: Vec3, t: number, target = new Vec3()) {
+        target.x = Mathf.lerp(a.x, b.x, t)
+        target.y = Mathf.lerp(a.y, b.y, t)
+        target.z = Mathf.lerp(a.z, b.z, t)
+
+        return target
+    }
+
+    static right() { return new Vec3(1, 0, 0) }
+    static forward() { return new Vec3(0, 0, 1) }
 
     constructor(
         x: number = 0,
@@ -33,6 +46,9 @@ export class Vec3 {
         this.buffer[2] = value
     }
 
+    toString() {
+        return `(${this.x}, ${this.y}, ${this.z})`
+    }
     inverse(target = new Vec3()) {
         target.x = -1 * this.x
         target.y = -1 * this.y
@@ -41,4 +57,19 @@ export class Vec3 {
         return target
     }
 
+    multiplyScalar(k: number, target = new Vec3()) {
+        target.x = this.x * k
+        target.y = this.y * k
+        target.z = this.z * k
+
+        return target
+    }
+
+    add(other: Vec3, target = new Vec3()) {
+        target.x = this.x + other.x
+        target.y = this.y + other.y
+        target.z = this.z + other.z
+
+        return target
+    }
 }

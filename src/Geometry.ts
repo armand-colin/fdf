@@ -41,7 +41,6 @@ export class Geometry {
         readonly indices: Uint16Array
     ) {
         this.count = indices.length
-        console.log('Built geometry', { positions, indices })
     }
 
 }

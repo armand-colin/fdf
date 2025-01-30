@@ -9,16 +9,20 @@ export class Slider extends Emitter<{ change: number }> {
     constructor(protected opts: {
         min: number,
         max: number,
-        label: string
+        label: string,
+        defaultValue?: number,
+        step?: number
     }) {
         super()
 
         const input = document.createElement("input")
-        const value = (opts.max - opts.min) / 2 + opts.min
+        const value = opts.defaultValue ?? (opts.max - opts.min) / 2 + opts.min
         input.type = "range"
         input.min = opts.min.toString()
         input.max = opts.max.toString()
         input.value = value.toString()
+        if (opts.step)
+            input.step = opts.step.toString()
 
         input.oninput = this.onInput
 

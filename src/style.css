@@ -1,3 +1,5 @@
 canvas {
   outline: 1px solid lightgrey;
+  width: 900px;
+  height: 600px;
 }

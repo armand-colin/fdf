@@ -9,7 +9,8 @@ export class LineMaterial extends Material {
 
     protected readonly indexBuffer: WebGLBuffer
 
-    protected readonly cameraLocation: WebGLUniformLocation | null
+    protected readonly projectionLocation: WebGLUniformLocation | null
+    protected readonly viewLocation: WebGLUniformLocation | null
 
     protected readonly positionLocation: GLint
     protected readonly positionBuffer: WebGLBuffer
@@ -22,7 +23,8 @@ export class LineMaterial extends Material {
         super(context, shader)
 
         // Get all locations
-        this.cameraLocation = this.shader.getUniformLocation("u_camera")
+        this.projectionLocation = this.shader.getUniformLocation("u_projection")
+        this.viewLocation = this.shader.getUniformLocation("u_view")
         this.positionLocation = this.shader.getAttributeLocation("a_position")
 
         this.indexBuffer = context.createBuffer()
@@ -34,7 +36,8 @@ export class LineMaterial extends Material {
         this.shader.bind()
 
         // Load camera data
-        this.shader.setUniformMat4(this.cameraLocation, camera.matrix)
+        this.shader.setUniformMat4(this.projectionLocation, camera.projection)
+        this.shader.setUniformMat4(this.viewLocation, camera.view)
 
         // Load indexBuffer
         this.context.bindBuffer(this.context.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
@@ -43,7 +46,7 @@ export class LineMaterial extends Material {
             geometry.indices,
             this.context.STATIC_DRAW
         )
-        
+
         // Load arrayBuffer
         this.context.enableVertexAttribArray(this.positionLocation)
         this.context.bindBuffer(this.context.ARRAY_BUFFER, this.positionBuffer)
@@ -61,7 +64,7 @@ export class LineMaterial extends Material {
         const count = geometry.count
 
         this.context.lineWidth(1)
-        
+
         this.context.drawElements(
             primitiveType,
             count,
@@ -74,11 +77,12 @@ export class LineMaterial extends Material {
 
 const vertex = /*glsl*/`#version 300 es
  
-uniform mat4 u_camera;
+uniform mat4 u_projection;
+uniform mat4 u_view;
 in vec4 a_position;
  
 void main() {
-  gl_Position = u_camera * a_position;
+    gl_Position = u_projection * u_view * a_position;
 }
 `
 
@@ -92,7 +96,7 @@ precision highp float;
 out vec4 outColor;
  
 void main() {
-  // Just set the output to a constant reddish-purple
-  outColor = vec4(1, 0, 0.5, 1);
+    // Just set the output to a constant reddish-purple
+    outColor = vec4(1, 0, 0.5, 1);
 }
 `
