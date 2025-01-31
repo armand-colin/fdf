@@ -2,8 +2,6 @@ import { Camera } from "./camera/Camera";
 import { GL } from "./GL";
 import { Scene } from "./Scene";
 
-type Context = WebGL2RenderingContext
-
 export class Renderer {
 
     constructor(

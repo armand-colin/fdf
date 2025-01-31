@@ -1,5 +1,6 @@
 import { Emitter } from "@niloc/utils";
 import { Vec3 } from "../math/Vec3";
+import { useObjectField } from "../hooks/useObjectField";
 
 export class OrbitalPosition extends Emitter<{ change: void }> {
 
@@ -30,6 +31,19 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
     set distance(distance: number) {
         this._distance = distance
         this.update()
+    }
+
+    useState() {
+        return useObjectField({
+            object: this,
+            accessor: orbital => ({
+                height: orbital.height,
+                distance: orbital.distance,
+                angle: orbital.angle
+            }),
+            emitter: this as OrbitalPosition,
+            event: "change"
+        })
     }
 
     update() {

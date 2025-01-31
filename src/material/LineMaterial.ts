@@ -56,7 +56,7 @@ export class LineMaterial extends Material {
         this.shader.bind()
 
         // Load camera data
-        this.shader.setUniformMat4(this.projectionLocation, camera.projection)
+        this.shader.setUniformMat4(this.projectionLocation, camera.projection.matrix)
         this.shader.setUniformMat4(this.viewLocation, camera.view)
         this.shader.setUniform1f(this.heightLocation, this.height)
 

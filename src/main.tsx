@@ -1,43 +1,37 @@
 import "./style.css"
-import { OrthographicCamera } from "./camera/OrthographicCamera"
 import { LineMaterial } from "./material/LineMaterial"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
-import { Vec3Slider } from "./utils/Vec3Slider"
-import { OrbitalPosition } from "./utils/OrbiltalPosition"
-import { OrbitalSlider } from "./utils/OrbitalSlider"
 import { Wireframe } from "./utils/Wireframe"
-import { GL, setGl } from "./GL"
-import cat from "./assets/cat.jpg"
+import { setGl } from "./GL"
 import face from "./assets/face.png"
-import island from "./assets/island.webp"
 import { Texture } from "./Texture"
 import { Slider } from "./ui/Slider"
+import { createRoot } from 'react-dom/client';
+import { Editor } from "./ui/editor/Editor"
+import { RenderingContext } from "./RenderingContext"
+import { OrthographicProjection } from "./camera/OrthographicProjection"
+import { Camera } from "./camera/Camera"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
 setGl(context)
 
 const renderer = new Renderer(canvas)
-
 // Fits the viewport
 renderer.fit()
 
-const camera = new OrthographicCamera(canvas)
-// const camera = new PerspectiveCamera({
-//     canvas,
-//     far: 10_000,
-//     fov: Math.PI / 2,
-//     near: 0.5
-// })
-
+const projection = new OrthographicProjection(canvas)
+const camera = new Camera(projection)
 const scene = new Scene()
 
-const orbital = new OrbitalPosition(camera.position, camera.rotation)
-orbital.on('change', render)
-
-OrbitalSlider.make(orbital)
+RenderingContext.init({
+    canvas,
+    camera,
+    renderer,
+    scene,
+})
 
 const geometry = Wireframe.make({
     length: 1000,
@@ -72,23 +66,6 @@ const object = new Object(
 
 scene.add(object)
 
-new Vec3Slider({
-    label: "camera position ",
-    max: 1000,
-    min: -1000,
-    target: camera.position,
-    onChange: render
-})
-
-new Vec3Slider({
-    label: "camera rotation ",
-    max: Math.PI * 2,
-    min: -Math.PI * 2,
-    target: camera.rotation,
-    step: 0.05,
-    onChange: render
-})
-
 const heightSlider = new Slider({
     label: "Height",
     max: 1000,
@@ -107,3 +84,7 @@ function render() {
 }
 
 render()
+
+// Render your React component instead
+const root = createRoot(document.getElementById('app')!)
+root.render(<Editor />)
