@@ -12,8 +12,8 @@ import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
 import cube from "./assets/monkey.obj?raw"
 import { Texture } from "./Texture"
-import { Slider } from "./ui/Slider"
 import { Geometry } from "./Geometry"
+import { Wireframe } from "./utils/Wireframe"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -34,14 +34,14 @@ RenderingContext.init({
     scene,
 })
 
-// const geometry = Wireframe.make({
-//     length: 1000,
-//     lineCount: 40,
-//     resolution: 5,
-//     hideZ: true
-// })
+const geometry = Wireframe.make({
+    length: 1,
+    lineCount: 40,
+    resolution: 5,
+    hideZ: true
+})
 
-const geometry = Geometry.fromOBJ(cube, 100)
+// const geometry = Geometry.fromOBJ(cube, 100)
 
 const material = new LineMaterial()
 
@@ -51,14 +51,15 @@ gradient.data.set([0, 255, 0, 255], 4)
 gradient.data.set([0, 0, 255, 255], 8)
 
 const gradientTexture = new Texture(gradient)
-material.gradient = gradientTexture
+material.setState({ gradient: gradientTexture })
 
 // Texture.fromImage(cat).then(texture => {
 //     material.texture = texture
 //     render()
 // })
+
 Texture.fromImage(face).then(texture => {
-    material.texture = texture
+    material.setState({ texture })
     render()
 })
 
@@ -68,19 +69,6 @@ const object = new Object(
 )
 
 scene.add(object)
-
-const heightSlider = new Slider({
-    label: "Height",
-    max: 1000,
-    min: -1000,
-    defaultValue: material.height,
-    step: 1,
-})
-
-heightSlider.on('change', height => {
-    material.height = height
-    render()
-})
 
 function render() {
     renderer.render(camera, scene)

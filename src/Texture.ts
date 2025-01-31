@@ -30,6 +30,10 @@ export class Texture {
 
     private _format: Format
 
+    get data(): Readonly<Data> {
+        return this._data
+    }
+
     constructor(data: Data, opts?: Partial<Opts>) {
         this._texture = GL.createTexture()
         this._data = data

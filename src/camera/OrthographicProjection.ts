@@ -1,23 +1,31 @@
 import { Projection } from "./Projection";
 
-export class OrthographicProjection extends Projection {
+type State = {
+    zoom: number
+}
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas)
-        this._updateProjection()
+export class OrthographicProjection extends Projection<State> {
+
+    protected override makeState(): State {
+        return {
+            zoom: 1
+        }
     }
 
-    private _updateProjection() {
-        const l = this.canvas.width * -1
-        const r = this.canvas.width * 1
-        const t = this.canvas.height * 1
-        const b = this.canvas.height * -1
+    override update() {
+        const { zoom } = this.state
+        const aspectRatio = this.canvas.width / this.canvas.height
+
+        const l = -1 / aspectRatio
+        const r = 1 / aspectRatio
+        const t = 1 * aspectRatio
+        const b = -1 * aspectRatio
 
         const f = 100_000
         const n = 0.5
 
-        this.matrix.set(0, 2 / (r - l))
-        this.matrix.set(5, 2 / (t - b))
+        this.matrix.set(0, zoom * 2 / (r - l))
+        this.matrix.set(5, zoom * 2 / (t - b))
         this.matrix.set(10, -2 / (f - n))
 
         this.matrix.set(12, -1 * (r + l) / (r - l))

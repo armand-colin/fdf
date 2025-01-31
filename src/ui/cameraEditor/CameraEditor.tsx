@@ -1,13 +1,12 @@
-import { useMemo } from "react";
 import { Camera } from "../../camera/Camera";
 import "./CameraEditor.scss";
 import { PerspectiveProjection } from "../../camera/PerspectiveProjection";
-import { PerspectiveProjectionEditor } from "./perspectiveProjectionEditor/PerspectiveProjectionEditor";
 import { RenderingContext } from "../../RenderingContext";
 import { OrthographicProjection } from "../../camera/OrthographicProjection";
 import { OrbitalEditor } from "./orbitalEditor/OrbitalEditor";
 import { OrbitalPosition } from "../../utils/OrbiltalPosition";
 import { useInstance } from "../../hooks/useInstance";
+import { ProjectionEditor } from "./projectionEditor/ProjectionEditor";
 
 type Props = {
 	camera: Camera
@@ -24,17 +23,10 @@ export function CameraEditor(props: Props) {
 		orbital.off('change', RenderingContext.render)
 	})
 
-	const projectionEditor = useMemo(() => {
-		if (projection instanceof PerspectiveProjection)
-			return <PerspectiveProjectionEditor projection={projection} />
-
-		return <></>
-	}, [projection])
-
 	return <div className="CameraEditor">
 		<ProjectionSelect camera={props.camera} />
 		<OrbitalEditor orbital={orbital} />
-		{projectionEditor}
+		<ProjectionEditor projection={projection} />
 	</div>
 }
 
@@ -46,6 +38,7 @@ const projections = [
 function ProjectionSelect(props: { camera: Camera }) {
 	function setCamera(projectionClass: (typeof projections)[number]) {
 		const projection = new projectionClass(RenderingContext.state.canvas)
+		console.log("At build", projection.state)
 		RenderingContext.state.camera.projection = projection
 		RenderingContext.render()
 	}

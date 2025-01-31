@@ -24,6 +24,8 @@ export class Camera extends Emitter<{ change: void }> {
         this.view.identity()
         this.view.rotate(this.rotation.inverse(), temp)
         this.view.translate(this.position.inverse(), temp)
+
+        this.projection.update()
     }
 
     useProjection() {

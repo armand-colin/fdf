@@ -1,7 +1,7 @@
 import { PerspectiveProjection } from "../../../camera/PerspectiveProjection";
 import { Mathf } from "../../../math/Mathf";
 import { RenderingContext } from "../../../RenderingContext";
-import { Slider } from "../../slider/Slider";
+import { NumberInput } from "../../numberInput/NumberInput";
 import "./PerspectiveProjectionEditor.scss";
 
 type Props = {
@@ -17,32 +17,32 @@ export function PerspectiveProjectionEditor(props: Props) {
 
 	return <div className="PerspectiveProjectionEditor">
 		<p>Perspective</p>
-		<Slider
+		<NumberInput
 			label="Far"
 			max={100_000}
 			min={10}
-			onInput={far =>  {
-				props.projection.set({ far })
+			onChange={far =>  {
+				props.projection.setState({ far })
 				RenderingContext.render()
 			}}
 			value={far}
 		/>
-		<Slider
+		<NumberInput
 			label="Near"
 			max={100}
 			min={0}
-			onInput={near =>  {
-				props.projection.set({ near })
+			onChange={near =>  {
+				props.projection.setState({ near })
 				RenderingContext.render()
 			}}
 			value={near}
 		/>
-		<Slider
+		<NumberInput
 			label="FOV"
 			max={180}
 			min={20}
-			onInput={fov =>  {
-				props.projection.set({ fov: Mathf.degreesToRadians(fov) })
+			onChange={fov =>  {
+				props.projection.setState({ fov: Mathf.degreesToRadians(fov) })
 				RenderingContext.render()
 			}}
 			value={Mathf.radiansToDegrees(fov)}

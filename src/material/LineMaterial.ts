@@ -7,7 +7,15 @@ import { Shader } from "../Shader"
 import { Texture } from "../Texture"
 import { Material } from "./Material"
 
-export class LineMaterial extends Material {
+type State = {
+    height: number,
+    texture: Texture | null,
+    gradient: Texture | null
+}
+
+export class LineMaterial extends Material<State> {
+
+    readonly name = "Line Material"
 
     protected readonly indexBuffer: WebGLBuffer
 
@@ -23,10 +31,6 @@ export class LineMaterial extends Material {
     protected readonly textureLocation: WebGLUniformLocation | null
     protected readonly gradientLocation: WebGLUniformLocation | null
     protected readonly heightLocation: WebGLUniformLocation | null
-
-    texture: Texture | null = null
-    gradient: Texture | null = null
-    height: number = 50
 
     constructor() {
         const shader = Shader.fromSource(vertex, fragment)
@@ -51,6 +55,14 @@ export class LineMaterial extends Material {
         this.indexBuffer = GL.createBuffer()
     }
 
+    protected override makeState(): State {
+        return {
+            height: 50,
+            gradient: null,
+            texture: null
+        }
+    }
+
     override draw(camera: Camera, geometry: Geometry): void {
         // Bind shader
         this.shader.bind()
@@ -58,18 +70,18 @@ export class LineMaterial extends Material {
         // Load camera data
         this.shader.setUniformMat4(this.projectionLocation, camera.projection.matrix)
         this.shader.setUniformMat4(this.viewLocation, camera.view)
-        this.shader.setUniform1f(this.heightLocation, this.height)
+        this.shader.setUniform1f(this.heightLocation, this.state.height)
 
-        if (this.texture) {
+        if (this.state.texture) {
             GL.activeTexture(GL.TEXTURE0)
             GL.uniform1i(this.textureLocation, 0)
-            this.texture.bind()
+            this.state.texture.bind()
         }
 
-        if (this.gradient) {
+        if (this.state.gradient) {
             GL.activeTexture(GL.TEXTURE1)
             GL.uniform1i(this.gradientLocation, 1)
-            this.gradient.bind()
+            this.state.gradient.bind()
         }
 
         // Load indexBuffer

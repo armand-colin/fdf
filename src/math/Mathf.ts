@@ -12,4 +12,7 @@ export namespace Mathf {
         return degrees / 360 * (Math.PI * 2)
     }
 
+    export function clamp(v: number, min: number, max: number) {
+        return Math.max(Math.min(max, v), min)
+    }
 }

@@ -34,6 +34,7 @@ export class Renderer {
         GL.clearColor(0, 0, 0, 0)
         GL.clear(GL.COLOR_BUFFER_BIT)
 
+        this.fit()
         camera.update()
 
         for (const object of scene.objects)
