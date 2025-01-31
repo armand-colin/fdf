@@ -12,8 +12,10 @@ import { GL, setGl } from "./GL"
 import cat from "./assets/cat.jpg"
 import face from "./assets/face.png"
 import island from "./assets/island.webp"
+import cube from "./assets/monkey.obj?raw"
 import { Texture } from "./Texture"
 import { Slider } from "./ui/Slider"
+import { Geometry } from "./Geometry"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -39,12 +41,14 @@ orbital.on('change', render)
 
 OrbitalSlider.make(orbital)
 
-const geometry = Wireframe.make({
-    length: 1000,
-    lineCount: 40,
-    resolution: 5,
-    hideZ: true
-})
+// const geometry = Wireframe.make({
+//     length: 1000,
+//     lineCount: 40,
+//     resolution: 5,
+//     hideZ: true
+// })
+
+const geometry = Geometry.fromOBJ(cube, 100)
 
 const material = new LineMaterial()
 
