@@ -1,6 +1,8 @@
 export class Vec2 {
 
     readonly buffer: Float32Array
+    
+    static readonly size = 2
     readonly size = 2
 
     constructor(

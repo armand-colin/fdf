@@ -8,20 +8,23 @@ export namespace OrbitalSlider {
             min: Math.PI * -2,
             max: Math.PI * 2,
             step: 0.05,
+            defaultValue: orbital.angle,
             label: "orbital angle"
         })
         angleSlider.on('change', angle => orbital.angle = angle)
-
+        
         const heightSlider = new Slider({
             min: 0,
             max: 1000,
+            defaultValue: orbital.height,
             label: "orbital height"
         })
         heightSlider.on('change', height => orbital.height = height)
-
+        
         const distanceSlider = new Slider({
             min: 0,
             max: 1000,
+            defaultValue: orbital.distance,
             label: "obital distance"
         })
         distanceSlider.on('change', distance => orbital.distance = distance)

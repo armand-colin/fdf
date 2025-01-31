@@ -14,16 +14,19 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
         super()
     }
 
+    get height() { return this._height } 
     set height(height: number) {
         this._height = height
         this.update()
     }
-
+    
+    get angle() { return this._angle } 
     set angle(angle: number) {
         this._angle = angle
         this.update()
     }
-
+    
+    get distance() { return this._distance } 
     set distance(distance: number) {
         this._distance = distance
         this.update()

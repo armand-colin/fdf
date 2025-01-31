@@ -1,4 +1,5 @@
 import { Camera } from "./camera/Camera";
+import { GL } from "./GL";
 import { Scene } from "./Scene";
 
 type Context = WebGL2RenderingContext
@@ -7,7 +8,6 @@ export class Renderer {
 
     constructor(
         protected readonly canvas: HTMLCanvasElement,
-        protected readonly context: Context
     ) { }
 
     fit(): boolean {
@@ -30,11 +30,11 @@ export class Renderer {
 
     render(camera: Camera, scene: Scene) {
         // Set the viewport
-        this.context.viewport(0, 0, this.canvas.width, this.canvas.height)
+        GL.viewport(0, 0, this.canvas.width, this.canvas.height)
 
         // Clear the canvas
-        this.context.clearColor(0, 0, 0, 0)
-        this.context.clear(this.context.COLOR_BUFFER_BIT)
+        GL.clearColor(0, 0, 0, 0)
+        GL.clear(GL.COLOR_BUFFER_BIT)
 
         camera.update()
 

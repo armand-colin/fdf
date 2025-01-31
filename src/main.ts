@@ -1,22 +1,25 @@
 import "./style.css"
 import { OrthographicCamera } from "./camera/OrthographicCamera"
-import { Geometry } from "./Geometry"
 import { LineMaterial } from "./material/LineMaterial"
-import { Vec3 } from "./math/Vec3"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
 import { Vec3Slider } from "./utils/Vec3Slider"
-import { Strips } from "./utils/Strips"
-import { PerspectiveCamera } from "./camera/PerspectiveCamera"
 import { OrbitalPosition } from "./utils/OrbiltalPosition"
-import { Slider } from "./ui/Slider"
 import { OrbitalSlider } from "./utils/OrbitalSlider"
+import { Wireframe } from "./utils/Wireframe"
+import { GL, setGl } from "./GL"
+import cat from "./assets/cat.jpg"
+import face from "./assets/face.png"
+import island from "./assets/island.webp"
+import { Texture } from "./Texture"
+import { Slider } from "./ui/Slider"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
+setGl(context)
 
-const renderer = new Renderer(canvas, context)
+const renderer = new Renderer(canvas)
 
 // Fits the viewport
 renderer.fit()
@@ -36,24 +39,35 @@ orbital.on('change', render)
 
 OrbitalSlider.make(orbital)
 
-const stripsX = Strips.make({
-    axis: Vec3.right(),
-    direction: Vec3.forward(),
+const geometry = Wireframe.make({
     length: 1000,
-    lineCount: 20,
-    resolution: 2
+    lineCount: 40,
+    resolution: 5,
+    hideZ: true
 })
-const stripsZ = Strips.make({
-    axis: Vec3.forward(),
-    direction: Vec3.right(),
-    length: 1000,
-    lineCount: 20,
-    resolution: 2
+
+const material = new LineMaterial()
+
+const gradient = new ImageData(3, 1)
+gradient.data.set([255, 0, 0, 255], 0)
+gradient.data.set([0, 255, 0, 255], 4)
+gradient.data.set([0, 0, 255, 255], 8)
+
+const gradientTexture = new Texture(gradient)
+material.gradient = gradientTexture
+
+// Texture.fromImage(cat).then(texture => {
+//     material.texture = texture
+//     render()
+// })
+Texture.fromImage(face).then(texture => {
+    material.texture = texture
+    render()
 })
 
 const object = new Object(
-    Geometry.fromLines([...stripsX, ...stripsZ]),
-    new LineMaterial(context)
+    geometry,
+    material
 )
 
 scene.add(object)
@@ -73,6 +87,19 @@ new Vec3Slider({
     target: camera.rotation,
     step: 0.05,
     onChange: render
+})
+
+const heightSlider = new Slider({
+    label: "Height",
+    max: 1000,
+    min: -1000,
+    defaultValue: material.height,
+    step: 1,
+})
+
+heightSlider.on('change', height => {
+    material.height = height
+    render()
 })
 
 function render() {
