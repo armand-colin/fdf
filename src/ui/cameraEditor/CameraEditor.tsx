@@ -4,7 +4,7 @@ import { PerspectiveProjection } from "../../camera/PerspectiveProjection";
 import { RenderingContext } from "../../RenderingContext";
 import { OrthographicProjection } from "../../camera/OrthographicProjection";
 import { OrbitalEditor } from "./orbitalEditor/OrbitalEditor";
-import { OrbitalPosition } from "../../utils/OrbiltalPosition";
+import { OrbitalPosition } from "../../utils/OrbitalPosition";
 import { useInstance } from "../../hooks/useInstance";
 import { ProjectionEditor } from "./projectionEditor/ProjectionEditor";
 

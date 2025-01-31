@@ -46,6 +46,10 @@ export class Vec3 {
         this.buffer[2] = value
     }
 
+    clone() {
+        return new Vec3(this.x, this.y, this.z)
+    }
+
     toString() {
         return `(${this.x}, ${this.y}, ${this.z})`
     }

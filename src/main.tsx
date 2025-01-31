@@ -10,9 +10,7 @@ import { Editor } from "./ui/editor/Editor"
 import { RenderingContext } from "./RenderingContext"
 import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
-import cube from "./assets/monkey.obj?raw"
 import { Texture } from "./Texture"
-import { Geometry } from "./Geometry"
 import { Wireframe } from "./utils/Wireframe"
 
 const canvas = document.body.querySelector("canvas")!
@@ -51,7 +49,10 @@ gradient.data.set([0, 255, 0, 255], 4)
 gradient.data.set([0, 0, 255, 255], 8)
 
 const gradientTexture = new Texture(gradient)
-material.setState({ gradient: gradientTexture })
+material.setState({ 
+    gradient: gradientTexture,
+    height: 1
+})
 
 // Texture.fromImage(cat).then(texture => {
 //     material.texture = texture
