@@ -3,16 +3,17 @@ import { LineMaterial } from "./material/LineMaterial"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
-import { Wireframe } from "./utils/Wireframe"
 import { setGl } from "./GL"
 import face from "./assets/face.png"
-import { Texture } from "./Texture"
-import { Slider } from "./ui/Slider"
 import { createRoot } from 'react-dom/client';
 import { Editor } from "./ui/editor/Editor"
 import { RenderingContext } from "./RenderingContext"
 import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
+import cube from "./assets/monkey.obj?raw"
+import { Texture } from "./Texture"
+import { Slider } from "./ui/Slider"
+import { Geometry } from "./Geometry"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -33,12 +34,14 @@ RenderingContext.init({
     scene,
 })
 
-const geometry = Wireframe.make({
-    length: 1000,
-    lineCount: 40,
-    resolution: 5,
-    hideZ: true
-})
+// const geometry = Wireframe.make({
+//     length: 1000,
+//     lineCount: 40,
+//     resolution: 5,
+//     hideZ: true
+// })
+
+const geometry = Geometry.fromOBJ(cube, 100)
 
 const material = new LineMaterial()
 
