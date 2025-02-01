@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { Geometry } from "./Geometry";
+import { Geometry } from "./geometry/Geometry";
 import { Material } from "./material/Material";
 
 export class Object {

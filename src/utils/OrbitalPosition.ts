@@ -49,7 +49,7 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
         const { xAngle, yAngle, distance, lookAt } = this._state
 
         const y = distance * Math.sin(xAngle)
-        const xzDistance = Math.cos(xAngle)
+        const xzDistance = distance * Math.cos(xAngle)
 
         const z = Math.cos(yAngle) * xzDistance
         const x = Math.sin(yAngle) * xzDistance
@@ -61,7 +61,15 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
         this.rotation.x = -xAngle
         this.rotation.z = 0
 
-        console.log('Set', this.position.toString(), this.rotation.toString())
+        console.log(
+            'Set',
+            {
+                y,
+                xzDistance
+            },
+            this.position.toString(),
+            this.rotation.toString()
+        )
 
         this.emit('change', undefined)
     }

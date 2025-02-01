@@ -50,8 +50,8 @@ export class Vec3 {
         return new Vec3(this.x, this.y, this.z)
     }
 
-    toString() {
-        return `(${this.x}, ${this.y}, ${this.z})`
+    toString(limit = 2) {
+        return `(${this.x.toFixed(limit)}, ${this.y.toFixed(limit)}, ${this.z.toFixed(limit)})`
     }
     inverse(target = new Vec3()) {
         target.x = -1 * this.x

@@ -1,5 +1,5 @@
 import "./style.css"
-import { LineMaterial } from "./material/LineMaterial"
+import { HeightMapMaterial } from "./material/HeightMapMaterial"
 import { Object } from "./Object"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
@@ -11,7 +11,7 @@ import { RenderingContext } from "./RenderingContext"
 import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
 import { Texture } from "./Texture"
-import { Wireframe } from "./utils/Wireframe"
+import { WireframeGeometry } from "./geometry/WireframeGeometry"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -32,16 +32,11 @@ RenderingContext.init({
     scene,
 })
 
-const geometry = Wireframe.make({
-    length: 1,
-    lineCount: 40,
-    resolution: 5,
-    hideZ: true
-})
+const geometry = new WireframeGeometry()
 
 // const geometry = Geometry.fromOBJ(cube, 100)
 
-const material = new LineMaterial()
+const material = new HeightMapMaterial()
 
 const gradient = new ImageData(3, 1)
 gradient.data.set([255, 0, 0, 255], 0)
@@ -60,7 +55,7 @@ material.setState({
 // })
 
 Texture.fromImage(face).then(texture => {
-    material.setState({ texture })
+    material.setState({ heightMap: texture })
     render()
 })
 

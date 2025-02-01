@@ -1,5 +1,5 @@
 import { Camera } from "../camera/Camera"
-import { Geometry } from "../Geometry"
+import { Geometry } from "../geometry/Geometry"
 import { GL } from "../GL"
 import { Vec2 } from "../math/Vec2"
 import { Vec3 } from "../math/Vec3"
@@ -9,13 +9,13 @@ import { Material } from "./Material"
 
 type State = {
     height: number,
-    texture: Texture | null,
+    heightMap: Texture | null,
     gradient: Texture | null
 }
 
-export class LineMaterial extends Material<State> {
+export class HeightMapMaterial extends Material<State> {
 
-    readonly name = "Line Material"
+    readonly name = "Height Map Material"
 
     protected readonly indexBuffer: WebGLBuffer
 
@@ -28,7 +28,7 @@ export class LineMaterial extends Material<State> {
     protected readonly uvLocation: GLint
     protected readonly uvBuffer: WebGLBuffer
 
-    protected readonly textureLocation: WebGLUniformLocation | null
+    protected readonly heightMapLocation: WebGLUniformLocation | null
     protected readonly gradientLocation: WebGLUniformLocation | null
     protected readonly heightLocation: WebGLUniformLocation | null
 
@@ -42,7 +42,7 @@ export class LineMaterial extends Material<State> {
         // Get all locations
         this.projectionLocation = this.shader.getUniformLocation("u_projection")
         this.viewLocation = this.shader.getUniformLocation("u_view")
-        this.textureLocation = this.shader.getUniformLocation("u_texture")
+        this.heightMapLocation = this.shader.getUniformLocation("u_texture")
         this.gradientLocation = this.shader.getUniformLocation("u_gradient")
         this.heightLocation = this.shader.getUniformLocation("u_height")
 
@@ -59,7 +59,7 @@ export class LineMaterial extends Material<State> {
         return {
             height: 50,
             gradient: null,
-            texture: null
+            heightMap: null
         }
     }
 
@@ -72,10 +72,10 @@ export class LineMaterial extends Material<State> {
         this.shader.setUniformMat4(this.viewLocation, camera.view)
         this.shader.setUniform1f(this.heightLocation, this.state.height)
 
-        if (this.state.texture) {
+        if (this.state.heightMap) {
             GL.activeTexture(GL.TEXTURE0)
-            GL.uniform1i(this.textureLocation, 0)
-            this.state.texture.bind()
+            GL.uniform1i(this.heightMapLocation, 0)
+            this.state.heightMap.bind()
         }
 
         if (this.state.gradient) {
@@ -88,7 +88,7 @@ export class LineMaterial extends Material<State> {
         GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
         GL.bufferData(
             GL.ELEMENT_ARRAY_BUFFER,
-            geometry.indices,
+            geometry.mesh.indices,
             GL.STATIC_DRAW
         )
 
@@ -97,7 +97,7 @@ export class LineMaterial extends Material<State> {
         GL.bindBuffer(GL.ARRAY_BUFFER, this.positionBuffer)
         GL.bufferData(
             GL.ARRAY_BUFFER,
-            geometry.positions,
+            geometry.mesh.positions,
             GL.STATIC_DRAW
         )
         GL.vertexAttribPointer(this.positionLocation, Vec3.size, GL.FLOAT, false, 0, 0)
@@ -107,7 +107,7 @@ export class LineMaterial extends Material<State> {
         GL.bindBuffer(GL.ARRAY_BUFFER, this.uvBuffer)
         GL.bufferData(
             GL.ARRAY_BUFFER,
-            geometry.uvs,
+            geometry.mesh.uvs,
             GL.STATIC_DRAW
         )
         GL.vertexAttribPointer(this.uvLocation, Vec2.size, GL.FLOAT, false, 0, 0)
@@ -134,7 +134,7 @@ const vertex = /*glsl*/`#version 300 es
  
 uniform mat4 u_projection;
 uniform mat4 u_view;
-uniform sampler2D u_texture;
+uniform sampler2D u_height_map;
 uniform sampler2D u_gradient;
 uniform float u_height;
 
@@ -143,7 +143,7 @@ in vec2 a_uv;
 out vec4 o_color;
 
 void main() {
-    float height = texture(u_texture, a_uv).x;
+    float height = texture(u_height_map, a_uv).x;
     vec4 color = vec4(texture(u_gradient, vec2(height, height)).xyz, 1.0);
     vec4 position = a_position + vec4(0.0, height * u_height, 0.0, 0.0);
 

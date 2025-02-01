@@ -1,28 +1,32 @@
 import { Projection } from "./Projection";
 
 type State = {
-    zoom: number
+    zoom: number,
+    far: number,
+    near: number
 }
 
 export class OrthographicProjection extends Projection<State> {
 
     protected override makeState(): State {
         return {
-            zoom: 1
+            zoom: 1,
+            far: 100_000,
+            near: 0.1
         }
     }
 
     override update() {
-        const { zoom } = this.state
+        const { zoom, far, near } = this.state
         const aspectRatio = this.canvas.width / this.canvas.height
 
-        const l = -1 / aspectRatio
-        const r = 1 / aspectRatio
-        const t = 1 * aspectRatio
-        const b = -1 * aspectRatio
+        const l = -1 * aspectRatio
+        const r = 1 * aspectRatio
+        const t = 1
+        const b = -1
 
-        const f = 100_000
-        const n = 0.5
+        const f = far
+        const n = near
 
         this.matrix.set(0, zoom * 2 / (r - l))
         this.matrix.set(5, zoom * 2 / (t - b))

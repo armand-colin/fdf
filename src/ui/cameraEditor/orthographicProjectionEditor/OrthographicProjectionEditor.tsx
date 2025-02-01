@@ -7,19 +7,27 @@ type Props = {
 }
 
 export function OrthographicProjectionEditor(props: Props) {
-	const { zoom } = props.projection.useState()
+	const { zoom, far, near } = props.projection.useState()
 
 	return <div className="OrthographicProjectionEditor">
 		<p>Orthographic</p>
 		<NumberInput 
 			label="Zoom"
-			onChange={zoom => {
-				console.log("onchange", zoom)
-				props.projection.setState({ zoom })
-			}}
+			onChange={zoom => props.projection.setState({ zoom })}
 			min={0.1}
 			value={zoom}
-			step={0.05}
+		/>
+		<NumberInput 
+			label="Far"
+			onChange={far => props.projection.setState({ far })}
+			min={0.1}
+			value={far}
+		/>
+		<NumberInput 
+			label="Near"
+			onChange={near => props.projection.setState({ near })}
+			min={0}
+			value={near}
 		/>
 	</div>
 }

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { LineMaterial } from "../../../material/LineMaterial";
+import { HeightMapMaterial } from "../../../material/HeightMapMaterial";
 import { RenderingContext } from "../../../RenderingContext";
 import { NumberInput } from "../../numberInput/NumberInput";
 import "./LineMaterialEditor.scss";
 
 type Props = {
-	material: LineMaterial
+	material: HeightMapMaterial
 }
 
 export function LineMaterialEditor(props: Props) {

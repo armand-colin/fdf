@@ -17,6 +17,8 @@ export namespace RenderingContext {
 
     const emitter = new Emitter<{ change: void }>()
 
+    let renderRequested = false
+
     export function useState() {
         const [_, forceUpdate] = useReducer(x => x + 1, 0)
 
@@ -42,7 +44,15 @@ export namespace RenderingContext {
     }
 
     export function render() {
-        state.renderer.render(state.camera, state.scene)
+        console.log("Ask render", renderRequested)
+        if (renderRequested)
+            return
+
+        renderRequested = true
+        requestAnimationFrame(() => {
+            state.renderer.render(state.camera, state.scene)
+            renderRequested = false
+        })
     }
 
 }

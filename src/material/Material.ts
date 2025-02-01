@@ -1,6 +1,6 @@
 import { Emitter } from "@niloc/utils"
 import { Camera } from "../camera/Camera"
-import { Geometry } from "../Geometry"
+import { Geometry } from "../geometry/Geometry"
 import { Shader } from "../Shader"
 import { useObjectField } from "../hooks/useObjectField"
 

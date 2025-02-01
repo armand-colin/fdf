@@ -18,6 +18,7 @@ export function CameraEditor(props: Props) {
 	const orbital = useInstance(() => {
 		const orbital = new OrbitalPosition(props.camera.position, props.camera.rotation)
 		orbital.on('change', RenderingContext.render)
+		orbital.update()
 		return orbital
 	}, (orbital) => {
 		orbital.off('change', RenderingContext.render)
@@ -25,8 +26,8 @@ export function CameraEditor(props: Props) {
 
 	return <div className="CameraEditor">
 		<ProjectionSelect camera={props.camera} />
-		<OrbitalEditor orbital={orbital} />
 		<ProjectionEditor projection={projection} />
+		<OrbitalEditor orbital={orbital} />
 	</div>
 }
 

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Material } from "../../material/Material";
 import "./MaterialEditor.scss";
-import { LineMaterial } from "../../material/LineMaterial";
+import { HeightMapMaterial } from "../../material/HeightMapMaterial";
 import { LineMaterialEditor } from "./lineMaterialEditor/LineMaterialEditor";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 export function MaterialEditor(props: Props) {
 
 	const body = useMemo(() => {
-		if (props.material instanceof LineMaterial)
+		if (props.material instanceof HeightMapMaterial)
 			return <LineMaterialEditor material={props.material} />
 	}, [props.material])
 

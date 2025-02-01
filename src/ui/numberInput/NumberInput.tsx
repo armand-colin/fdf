@@ -15,19 +15,19 @@ class DragController {
 
 	startX: number
 	initialValue: number
-	pixelRatio: number
 	onChange: (value: number) => void
+	step: number
 
 	constructor(opts: {
 		event: MouseEvent,
 		value: number,
-		pixelRatio?: number,
-		onChange: (value: number) => void
+		onChange: (value: number) => void,
+		step?: number
 	}) {
 		this.startX = opts.event.pageX
 		this.initialValue = opts.value
-		this.pixelRatio = opts.pixelRatio ?? 1
 		this.onChange = opts.onChange
+		this.step = opts.step ?? 0.05
 
 		window.addEventListener('mousemove', this._onMouseMove)
 		window.addEventListener('mouseup', this.stop)
@@ -39,8 +39,11 @@ class DragController {
 
 	private _onMouseMove = (e: globalThis.MouseEvent) => {
 		const x = e.pageX
-		const delta = (x - this.startX) * this.pixelRatio
-		const value = this.initialValue + delta
+		const deltaX = (x - this.startX)
+		const pixelRatio = Math.min(1, Math.abs(deltaX / 100))
+
+		const grossValue = this.initialValue + deltaX * pixelRatio
+		const value = grossValue - (grossValue % this.step)
 		this.onChange(value)
 	}
 
@@ -74,7 +77,7 @@ export function NumberInput(props: Props) {
 	function onChange(e: ChangeEvent<HTMLInputElement>) {
 		const value = Number.parseFloat(e.target.value)
 
-		if (Number.isNaN(value))
+		if (Number.isNaN(value) || e.target.value === "-0")
 			setValue(e.target.value)
 		else
 			set(value)
@@ -84,8 +87,8 @@ export function NumberInput(props: Props) {
 		const controller = new DragController({
 			event: e,
 			value: props.value,
-			pixelRatio: props.step,
-			onChange: value => set(value)
+			onChange: value => set(value),
+			step: props.step
 		})
 
 		if (dragController.current) 
@@ -104,6 +107,7 @@ export function NumberInput(props: Props) {
 			value={value}
 			min={props.min}
 			max={props.max}
+			step={props.step}
 		/>
 	</div>
 }
