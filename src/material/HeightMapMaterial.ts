@@ -68,9 +68,9 @@ export class HeightMapMaterial extends Material<State> {
         this.shader.bind()
 
         // Load camera data
-        this.shader.setUniformMat4(this.projectionLocation, camera.projection.matrix)
-        this.shader.setUniformMat4(this.viewLocation, camera.view)
-        this.shader.setUniform1f(this.heightLocation, this.state.height)
+        this.shader.setUniform(this.projectionLocation, camera.projection.matrix)
+        this.shader.setUniform(this.viewLocation, camera.view)
+        this.shader.setUniform(this.heightLocation, this.state.height)
 
         if (this.state.heightMap) {
             GL.activeTexture(GL.TEXTURE0)

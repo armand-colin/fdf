@@ -12,6 +12,9 @@ import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
 import { Texture } from "./Texture"
 import { WireframeGeometry } from "./geometry/WireframeGeometry"
+import { StaticGeometry } from "./geometry/StaticGeometry"
+import monkeyObj from "./assets/monkey.obj?raw"
+import { BlinnPhongMaterial } from "./material/BlinnPhongMaterial"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -32,39 +35,52 @@ RenderingContext.init({
     scene,
 })
 
-const geometry = new WireframeGeometry()
 
-// const geometry = Geometry.fromOBJ(cube, 100)
+const wireframe = (() => {
+    const geometry = new WireframeGeometry()
+    const material = new HeightMapMaterial()
 
-const material = new HeightMapMaterial()
+    const gradient = new ImageData(3, 1)
+    gradient.data.set([255, 0, 0, 255], 0)
+    gradient.data.set([0, 255, 0, 255], 4)
+    gradient.data.set([0, 0, 255, 255], 8)
 
-const gradient = new ImageData(3, 1)
-gradient.data.set([255, 0, 0, 255], 0)
-gradient.data.set([0, 255, 0, 255], 4)
-gradient.data.set([0, 0, 255, 255], 8)
+    const gradientTexture = new Texture(gradient)
+    material.setState({
+        gradient: gradientTexture,
+        height: 1
+    })
 
-const gradientTexture = new Texture(gradient)
-material.setState({ 
-    gradient: gradientTexture,
-    height: 1
-})
+    Texture.fromImage(face).then(texture => {
+        material.setState({ heightMap: texture })
+        render()
+    })
+
+    return new Object({ 
+        name: "Wireframe",
+        geometry, 
+        material 
+    })
+})()
+
+const monkey = (() => {
+    const geometry = StaticGeometry.fromObj(monkeyObj)
+    const material = new BlinnPhongMaterial()
+
+    return new Object({
+        name: "Monkey",
+        geometry, 
+        material
+    })
+})()
 
 // Texture.fromImage(cat).then(texture => {
 //     material.texture = texture
 //     render()
 // })
 
-Texture.fromImage(face).then(texture => {
-    material.setState({ heightMap: texture })
-    render()
-})
-
-const object = new Object(
-    geometry,
-    material
-)
-
-scene.add(object)
+scene.add(wireframe)
+scene.add(monkey)
 
 function render() {
     renderer.render(camera, scene)

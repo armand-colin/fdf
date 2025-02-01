@@ -37,8 +37,12 @@ export class Renderer {
         this.fit()
         camera.update()
 
-        for (const object of scene.objects)
+        for (const object of scene.objects) {
+            if (!object.enabled)
+                continue
+
             object.material.draw(camera, object.geometry)
+        }
     }
 
 }

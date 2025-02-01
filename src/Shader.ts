@@ -1,5 +1,8 @@
 import { GL } from "./GL";
+import { Color } from "./math/Color";
 import { Mat4 } from "./math/Mat4";
+
+type Uniform = Mat4 | Color | number
 
 export class Shader {
 
@@ -87,12 +90,13 @@ export class Shader {
         return location
     }
 
-    setUniformMat4(location: WebGLUniformLocation | null, value: Mat4) {
-        GL.uniformMatrix4fv(location, false, value.buffer)
-    }
-    
-    setUniform1f(location: WebGLUniformLocation | null, value: number) {
-        GL.uniform1f(location, value)
+    setUniform(location: WebGLUniformLocation | null, value: Uniform) {
+        if (value instanceof Mat4)
+            GL.uniformMatrix4fv(location, false, value.buffer)
+        else if (value instanceof Color)
+            GL.uniform4f(location, value.r, value.g, value.b, value.a)
+        else if (typeof value === "number")
+            GL.uniform1f(location, value)
     }
 
 }

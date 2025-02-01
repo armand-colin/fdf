@@ -4,7 +4,7 @@ import { Mesh } from "./Mesh"
 
 export class StaticGeometry extends Geometry {
 
-    static fromObj(objText: string, scale: number): StaticGeometry {
+    static fromObj(objText: string, scale: number = 1): StaticGeometry {
         const positions: number[] = []
         const indices: number[] = []
 
