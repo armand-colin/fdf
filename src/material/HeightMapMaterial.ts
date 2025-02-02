@@ -23,6 +23,7 @@ export class HeightMapMaterial extends Material<State> {
 
     protected readonly projectionLocation: WebGLUniformLocation | null
     protected readonly viewLocation: WebGLUniformLocation | null
+    protected readonly modelLocation: WebGLUniformLocation | null
 
     protected readonly positionLocation: GLint
     protected readonly positionBuffer: WebGLBuffer
@@ -44,6 +45,8 @@ export class HeightMapMaterial extends Material<State> {
         // Get all locations
         this.projectionLocation = this.shader.getUniformLocation("u_projection")
         this.viewLocation = this.shader.getUniformLocation("u_view")
+        this.modelLocation = this.shader.getUniformLocation("u_model")
+
         this.heightMapLocation = this.shader.getUniformLocation("u_height_map")
         this.gradientLocation = this.shader.getUniformLocation("u_gradient")
         this.heightLocation = this.shader.getUniformLocation("u_height")
@@ -65,13 +68,14 @@ export class HeightMapMaterial extends Material<State> {
         }
     }
 
-    override draw(camera: Camera, _transform: Transform, geometry: Geometry): void {
+    override draw(camera: Camera, transform: Transform, geometry: Geometry): void {
         // Bind shader
         this.shader.bind()
 
         // Load camera data
         this.shader.setUniform(this.projectionLocation, camera.projection.matrix)
         this.shader.setUniform(this.viewLocation, camera.view)
+        this.shader.setUniform(this.modelLocation, transform.matrix)
         this.shader.setUniform(this.heightLocation, this.state.height)
 
         if (this.state.heightMap)
@@ -130,6 +134,8 @@ const vertex = /*glsl*/`#version 300 es
  
 uniform mat4 u_projection;
 uniform mat4 u_view;
+uniform mat4 u_model;
+
 uniform sampler2D u_height_map;
 uniform sampler2D u_gradient;
 uniform float u_height;
@@ -143,7 +149,7 @@ void main() {
     vec4 color = vec4(texture(u_gradient, vec2(height, height)).xyz, 1.0);
     vec4 position = a_position + vec4(0.0, height * u_height, 0.0, 0.0);
 
-    gl_Position = u_projection * u_view * position;
+    gl_Position = u_projection * u_view * u_model * position;
     o_color = color;
 }
 `
