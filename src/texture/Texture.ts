@@ -10,11 +10,11 @@ type Opts = {
     format: Format
 }
 
-export class Texture extends Emitter<{ change: void }> {
+export class Texture<Data extends ITextureData = ITextureData> extends Emitter<{ change: void }> {
 
     private readonly _texture: WebGLTexture
 
-    private _data: ITextureData
+    private _data: Data
 
     static fromImage(imageUrl: string, opts?: Partial<Opts>) {
         const image = Image.fromUrl(imageUrl)
@@ -23,7 +23,7 @@ export class Texture extends Emitter<{ change: void }> {
 
     private _format: Format
 
-    constructor(data: ITextureData, opts?: Partial<Opts>) {
+    constructor(data: Data, opts?: Partial<Opts>) {
         super()
         this._texture = GL.createTexture()
         this._data = data
@@ -32,11 +32,11 @@ export class Texture extends Emitter<{ change: void }> {
         this.load()
     }
 
-    get data(): ITextureData {
+    get data(): Data {
         return this._data
     }
 
-    setData(data: ITextureData) {
+    setData(data: Data) {
         this._data = data
         this.load()
         this.emit('change', undefined)

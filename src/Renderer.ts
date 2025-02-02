@@ -43,7 +43,7 @@ export class Renderer {
             if (!object.enabled)
                 continue
 
-            object.material.draw(camera, object.geometry)
+            object.material.draw(camera, object.transform, object.geometry)
         }
     }
 

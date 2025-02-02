@@ -1,7 +1,7 @@
 export class Vec2 {
 
     readonly buffer: Float32Array
-    
+
     static readonly size = 2
     readonly size = 2
 
@@ -10,6 +10,28 @@ export class Vec2 {
         y: number = 0
     ) {
         this.buffer = new Float32Array([x, y])
+    }
+
+    get sqMagnitude() {
+        return this.x * this.x + this.y * this.y
+    }
+
+    clone() {
+        return new Vec2(this.x, this.y)
+    }
+
+    sub(other: Vec2, target = new Vec2()) {
+        target.x = this.x - other.x
+        target.y = this.y - other.y
+
+        return target
+    }
+
+    add(other: Vec2, target = new Vec2()) {
+        target.x = this.x + other.x
+        target.y = this.y + other.y
+
+        return target
     }
 
     get x() {

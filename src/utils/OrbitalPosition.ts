@@ -1,6 +1,7 @@
 import { Emitter } from "@niloc/utils";
 import { Vec3 } from "../math/Vec3";
 import { useObjectField } from "../hooks/useObjectField";
+import { Transform } from "../Transform";
 
 type State = {
     yAngle: number,
@@ -13,10 +14,7 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
 
     private _state: State
 
-    constructor(
-        readonly position: Vec3,
-        readonly rotation: Vec3
-    ) {
+    constructor(readonly transform: Transform) {
         super()
 
         this._state = {
@@ -30,6 +28,7 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
     setState(state: Partial<State>) {
         Object.assign(this._state, state)
         this.update()
+        this.emit('change', undefined)
     }
 
     useState() {
@@ -54,14 +53,8 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
         const z = Math.cos(yAngle) * xzDistance
         const x = Math.sin(yAngle) * xzDistance
 
-        this.position.buffer.set([x, y, z])
-        this.position.add(lookAt, this.position)
-
-        this.rotation.y = yAngle
-        this.rotation.x = -xAngle
-        this.rotation.z = 0
-
-        this.emit('change', undefined)
+        this.transform.position = new Vec3(x, y, z).add(lookAt)
+        this.transform.rotation = new Vec3(-xAngle, yAngle, 0)
     }
 
 }

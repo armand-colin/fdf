@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
 import { Geometry } from "./geometry/Geometry";
 import { Material } from "./material/Material";
-import { Vec3 } from "./math/Vec3";
 import { Emitter } from "@niloc/utils";
 import { useObjectField } from "./hooks/useObjectField";
+import { Transform } from "./Transform";
 
 export class Object extends Emitter<{ change: void }> {
 
@@ -16,9 +16,7 @@ export class Object extends Emitter<{ change: void }> {
 
     private _enabled = true
 
-    position = new Vec3()
-    rotation = new Vec3()
-    scale = new Vec3()
+    readonly transform = new Transform()
 
     constructor(opts: {
         geometry: Geometry,

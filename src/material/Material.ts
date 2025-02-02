@@ -3,6 +3,7 @@ import { Camera } from "../camera/Camera"
 import { Geometry } from "../geometry/Geometry"
 import { Shader } from "../Shader"
 import { useObjectField } from "../hooks/useObjectField"
+import { Transform } from "../Transform"
 
 export abstract class Material<State = any> extends Emitter<{ change: void }> {
 
@@ -22,7 +23,7 @@ export abstract class Material<State = any> extends Emitter<{ change: void }> {
 
     protected abstract makeState(): State
 
-    abstract draw(camera: Camera, geometry: Geometry): void
+    abstract draw(camera: Camera, transform: Transform, geometry: Geometry): void
 
     useState(): State {
         return useObjectField({

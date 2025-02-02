@@ -36,6 +36,7 @@ function SceneObjectRow(props: { object: Object, selected: boolean }) {
 	const { enabled } = props.object.useState()
 
 	useEffect(() => {
+		console.log('asked render')
 		RenderingContext.render()
 	}, [enabled])
 

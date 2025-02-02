@@ -1,16 +1,18 @@
 import { Camera } from "../camera/Camera"
 import { Geometry } from "../geometry/Geometry"
 import { GL } from "../GL"
+import { Gradient } from "../Gradient"
 import { Vec2 } from "../math/Vec2"
 import { Vec3 } from "../math/Vec3"
 import { Shader } from "../Shader"
 import { Texture } from "../texture/Texture"
+import { Transform } from "../Transform"
 import { Material } from "./Material"
 
 type State = {
     height: number,
     heightMap: Texture | null,
-    gradient: Texture | null
+    gradient: Texture<Gradient> | null
 }
 
 export class HeightMapMaterial extends Material<State> {
@@ -63,7 +65,7 @@ export class HeightMapMaterial extends Material<State> {
         }
     }
 
-    override draw(camera: Camera, geometry: Geometry): void {
+    override draw(camera: Camera, _transform: Transform, geometry: Geometry): void {
         // Bind shader
         this.shader.bind()
 

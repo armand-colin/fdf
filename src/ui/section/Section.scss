@@ -14,8 +14,30 @@
             border-radius: 4px 4px 0 0;
         }
 
-        > label .Icon {
+        > label > .Icon {
             transform: rotate(0.5turn);
+        }
+    }
+
+    &[data-floating="true"] {
+        position: fixed;
+        left: var(--x);
+        top: var(--y);
+        width: 300px;
+    }
+
+    &__float-button {
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        position: relative;
+        &:hover {
+            outline: 2px solid var(--color-outline);
+            z-index: 2;
+        }
+        &:active {
+            outline: 2px solid var(--color-outline-active);
         }
     }
 
@@ -27,6 +49,14 @@
         align-items: center;
         background: var(--color-label);
         border-radius: 4px;
+        > .Icon {
+            pointer-events: none;
+        }
+        p {
+            flex: 1;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
     }
 
     > article {

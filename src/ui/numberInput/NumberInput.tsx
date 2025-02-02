@@ -2,6 +2,7 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import "./NumberInput.scss";
 import { Mathf } from "../../math/Mathf";
 import { Input } from "../input/Input";
+import { NumberDragController } from "../../controllers/NumberDragController";
 
 type Props = {
 	min?: number,
@@ -9,50 +10,13 @@ type Props = {
 	value: number,
 	onChange: (value: number) => void,
 	label: string,
-	step?: number
-}
-
-class DragController {
-
-	startX: number
-	initialValue: number
-	onChange: (value: number) => void
-	step: number
-
-	constructor(opts: {
-		event: MouseEvent,
-		value: number,
-		onChange: (value: number) => void,
-		step?: number
-	}) {
-		this.startX = opts.event.pageX
-		this.initialValue = opts.value
-		this.onChange = opts.onChange
-		this.step = opts.step ?? 0.05
-
-		window.addEventListener('mousemove', this._onMouseMove)
-		window.addEventListener('mouseup', this.stop)
-	}
-
-	stop = () => {
-		window.removeEventListener('mousemove', this._onMouseMove)
-	}
-
-	private _onMouseMove = (e: globalThis.MouseEvent) => {
-		const x = e.pageX
-		const deltaX = (x - this.startX)
-		const pixelRatio = Math.min(1, Math.abs(deltaX / 100))
-
-		const grossValue = this.initialValue + deltaX * pixelRatio
-		const value = grossValue - (grossValue % this.step)
-		this.onChange(value)
-	}
-
+	step?: number,
+	strength?: number
 }
 
 export function NumberInput(props: Props) {
 	const [value, setValue] = useState<string>(props.value.toString())
-	const dragController = useRef<DragController | null>(null)
+	const dragController = useRef<NumberDragController | null>(null)
 
 	const min = props.min ?? -Infinity
 	const max = props.max ?? Infinity
@@ -85,11 +49,12 @@ export function NumberInput(props: Props) {
 	}
 
 	function onMouseDown(e: MouseEvent) {
-		const controller = new DragController({
+		const controller = new NumberDragController({
 			event: e,
 			value: props.value,
 			onChange: value => set(value),
-			step: props.step
+			step: props.step,
+			strength: props.strength
 		})
 
 		if (dragController.current)
@@ -110,4 +75,22 @@ export function NumberInput(props: Props) {
 			step={props.step}
 		/>
 	</div>
+}
+
+export namespace NumberInput {
+
+	export function Angle(props: { 
+		label: string,
+		value: number, 
+		onChange: (value: number) => void 
+	}) {
+		return <NumberInput 
+			label={props.label}
+			value={Mathf.radiansToDegrees(props.value)}
+			onChange={value => props.onChange(Mathf.degreesToRadians(value))}
+			min={0}
+			max={360}
+		/>
+	}
+
 }

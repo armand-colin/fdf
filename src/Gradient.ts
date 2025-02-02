@@ -17,7 +17,7 @@ export class Gradient extends Emitter<{ change: void }> implements ITextureData 
 
     constructor(points: GradientPoint[]) {
         super()
-        this.points = points
+        this.points = [...points].sort((a, b) => a.t - b.t)
         this.imageData = new ImageData(this._resolution, 1)
         this.bake()
     }
@@ -35,8 +35,7 @@ export class Gradient extends Emitter<{ change: void }> implements ITextureData 
             let color: Color
             if (i === -1) {
                 color = this.points[0].color
-            }
-            if (i === this.points.length - 1) {
+            } else if (i === this.points.length - 1) {
                 color = this.points[this.points.length - 1].color
             } else {
                 // we are between point i and i + 1

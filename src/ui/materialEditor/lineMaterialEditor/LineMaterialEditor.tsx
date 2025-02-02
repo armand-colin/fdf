@@ -2,8 +2,9 @@ import { Gradient } from "../../../Gradient";
 import { useUpdate } from "../../../hooks/useUpdate";
 import { HeightMapMaterial } from "../../../material/HeightMapMaterial";
 import { Texture } from "../../../texture/Texture";
-import { GradientInput } from "../../gradientInput/GradientInput";
+import { GradientEditor } from "../../gradientEditor/GradientEditor";
 import { NumberInput } from "../../numberInput/NumberInput";
+import { Section } from "../../section/Section";
 import "./LineMaterialEditor.scss";
 
 type Props = {
@@ -29,14 +30,17 @@ export function LineMaterialEditor(props: Props) {
 			onChange={height => props.material.setState({ height })}
 			value={height}
 		/>
-		{
-			gradient && gradient.data instanceof Gradient ?
-				<GradientInput 
-					gradient={gradient.data}
-					label="Height Gradient"
-					onChange={onGradientChange}
-				/> :
-				undefined
-		}
+		<Section
+			label="Height Gradient"
+		>
+			{
+				gradient ?
+					<GradientEditor
+						gradient={gradient.data}
+						onChange={onGradientChange}
+					/> :
+					undefined
+			}
+		</Section>
 	</div>
 }

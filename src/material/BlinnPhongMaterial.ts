@@ -4,6 +4,7 @@ import { GL } from "../GL";
 import { Color } from "../math/Color";
 import { Vec3 } from "../math/Vec3";
 import { Shader } from "../Shader";
+import { Transform } from "../Transform";
 import { Material } from "./Material";
 
 type State = {
@@ -26,6 +27,8 @@ export class BlinnPhongMaterial extends Material<State> {
 
     protected readonly projectionLocation: WebGLUniformLocation | null
     protected readonly viewLocation: WebGLUniformLocation | null
+    protected readonly modelLocation: WebGLUniformLocation | null
+
     protected readonly colorLocation: WebGLUniformLocation | null
     protected readonly lightDirectionLocation: WebGLUniformLocation | null
 
@@ -46,6 +49,8 @@ export class BlinnPhongMaterial extends Material<State> {
 
         this.projectionLocation = this.shader.getUniformLocation("u_projection")
         this.viewLocation = this.shader.getUniformLocation("u_view")
+        this.modelLocation = this.shader.getUniformLocation("u_model")
+
         this.colorLocation = this.shader.getUniformLocation("u_color")
         this.lightDirectionLocation = this.shader.getUniformLocation("u_light_direction")
     }
@@ -57,13 +62,14 @@ export class BlinnPhongMaterial extends Material<State> {
         }
     }
 
-    override draw(camera: Camera, geometry: Geometry): void {
+    override draw(camera: Camera, transform: Transform, geometry: Geometry): void {
         // Bind shader
         this.shader.bind()
 
         // Load camera data
         this.shader.setUniform(this.projectionLocation, camera.projection.matrix)
         this.shader.setUniform(this.viewLocation, camera.view)
+        this.shader.setUniform(this.modelLocation, transform.matrix)
         this.shader.setUniform(this.colorLocation, this.state.color)
         this.shader.setUniform(this.lightDirectionLocation, this.state.lightDirection.normalized())
 
@@ -116,6 +122,7 @@ const vertex = /*glsl*/`#version 300 es
  
 uniform mat4 u_projection;
 uniform mat4 u_view;
+uniform mat4 u_model;
 
 in vec4 a_position;
 in vec3 a_normal;
@@ -124,7 +131,7 @@ out vec3 o_normal;
 
 void main() {
     o_normal = a_normal;
-    gl_Position = u_projection * u_view * a_position;
+    gl_Position = u_projection * u_view * u_model * a_position;
 }
 `
 

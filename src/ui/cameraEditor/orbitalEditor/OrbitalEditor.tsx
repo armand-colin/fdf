@@ -1,6 +1,5 @@
 import { OrbitalPosition } from "../../../utils/OrbitalPosition";
 import "./OrbitalEditor.scss";
-import { Mathf } from "../../../math/Mathf";
 import { NumberInput } from "../../numberInput/NumberInput";
 import { Vec3NumberInput } from "../../numberInput/vec3NumberInput/Vec3NumberInput";
 
@@ -24,19 +23,15 @@ export function OrbitalEditor(props: Props) {
 			onChange={distance => props.orbital.setState({ distance })}
 			value={distance}
 		/>
-		<NumberInput
+		<NumberInput.Angle
 			label="X Angle"
-			min={0}
-			max={360}
-			onChange={xAngle => props.orbital.setState({ xAngle: Mathf.degreesToRadians(xAngle) })}
-			value={Mathf.radiansToDegrees(xAngle)}
+			onChange={xAngle => props.orbital.setState({ xAngle })}
+			value={xAngle}
 		/>
-		<NumberInput
+		<NumberInput.Angle
 			label="Y Angle"
-			min={0}
-			max={360}
-			onChange={yAngle => props.orbital.setState({ yAngle: Mathf.degreesToRadians(yAngle) })}
-			value={Mathf.radiansToDegrees(yAngle)}
+			onChange={yAngle => props.orbital.setState({ yAngle })}
+			value={yAngle}
 		/>
 		<Vec3NumberInput
 			label="Look At"

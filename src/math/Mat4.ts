@@ -227,14 +227,28 @@ export class Mat4 {
 
         this.buffer = buffer
     }
+ 
+    toString() {
+        return `(
+${this.buffer[0]},${this.buffer[1]},${this.buffer[2]},${this.buffer[3]},
+${this.buffer[4]},${this.buffer[5]},${this.buffer[6]},${this.buffer[7]},
+${this.buffer[8]},${this.buffer[9]},${this.buffer[10]},${this.buffer[11]},
+${this.buffer[12]},${this.buffer[13]},${this.buffer[14]},${this.buffer[15]}
+)`
+    }
 
-    identity() {
+    /**
+     * Sets this matrix to identity matrix, in place
+     */
+    identity(): this {
         this.buffer.set([
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
             0, 0, 0, 1
         ])
+
+        return this
     }
 
     set(i: number, value: number) {
@@ -243,6 +257,10 @@ export class Mat4 {
 
     translate(translation: Vec3, temp = new Mat4()) {
         Mat4.multiply(this, Mat4.translation(translation, temp), this)
+    }
+
+    scale(scale: Vec3, temp = new Mat4()) {
+        Mat4.multiply(this, Mat4.scaling(scale, temp), this)
     }
 
     rotate(euler: Vec3, temp = new Mat4()) {

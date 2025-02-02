@@ -1,0 +1,40 @@
+.GradientEditor {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+
+    &__visualizer {
+        height: 48px;
+        width: 100%;
+        background: var(--color-input);
+        padding: 4px;
+        border-radius: 4px;
+        &::after {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+            background: var(--gradient);
+            content: "";
+            display: block;
+        }
+    }
+
+    &__points {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .PointEditor {
+        display: flex;
+        gap: 4px;
+
+        &__inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+    }
+}

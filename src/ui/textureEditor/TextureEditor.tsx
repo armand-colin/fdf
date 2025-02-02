@@ -3,7 +3,7 @@ import { Texture } from "../../texture/Texture";
 import "./TextureEditor.scss";
 import { Image } from "../../texture/Image";
 import { Gradient } from "../../Gradient";
-import { GradientInput } from "../gradientInput/GradientInput";
+import { GradientEditor } from "../gradientEditor/GradientEditor";
 
 type Props = {
 	label: string,
@@ -29,7 +29,7 @@ function TextureEditorNotNull(props: { texture: Texture }) {
 			return <img src={textureData.image.src} />
 
 		if (textureData instanceof Gradient)
-			return <GradientInput
+			return <GradientEditor
 				gradient={textureData}
 				label="Gradient"
 				onChange={gradient => props.texture.setData(gradient)}

@@ -1,15 +1,11 @@
 import { Emitter } from "@niloc/utils"
-import { Mat4 } from "../math/Mat4"
-import { Vec3 } from "../math/Vec3"
 import { Projection } from "./Projection"
 import { useObjectField } from "../hooks/useObjectField"
+import { Transform } from "../Transform"
 
 export class Camera extends Emitter<{ change: void }> { 
 
-    readonly position = new Vec3()
-    readonly rotation = new Vec3()
-
-    readonly view = Mat4.identity()
+    readonly transform = new Transform()
 
     private _projection: Projection
 
@@ -19,13 +15,11 @@ export class Camera extends Emitter<{ change: void }> {
     }
 
     update() {
-        const temp = new Mat4()
-
-        this.view.identity()
-        this.view.rotate(this.rotation.inverse(), temp)
-        this.view.translate(this.position.inverse(), temp)
-
         this.projection.update()
+    }
+
+    get view()  {
+        return this.transform.inverseMatrix
     }
 
     useProjection() {
