@@ -3,10 +3,15 @@ import { GL } from "../GL"
 import { GeometryPrimitive } from "./GeometryPrimitive"
 import { Mesh } from "./Mesh"
 import { useObjectField } from "../hooks/useObjectField"
+import { Resource } from "../library/Resource"
+import { nanoid } from "nanoid"
 
 type IndexType = GL["UNSIGNED_SHORT"] | GL["UNSIGNED_BYTE"] | GL["UNSIGNED_INT"]
 
-export abstract class Geometry<State = {}> extends Emitter<{ change: void }> {
+export abstract class Geometry<State = {}> extends Emitter<{ change: void }> implements Resource {
+
+    readonly id = nanoid()
+    name: string = "Geometry"
 
     static readonly Lines = WebGL2RenderingContext.LINES
     static readonly Triangles = WebGL2RenderingContext.TRIANGLES

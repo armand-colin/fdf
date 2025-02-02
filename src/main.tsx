@@ -1,7 +1,7 @@
 import "./style/index.scss"
 import "./style.css"
 import { HeightMapMaterial } from "./material/HeightMapMaterial"
-import { Object } from "./Object"
+import { SceneObject } from "./SceneObject"
 import { Renderer } from "./Renderer"
 import { Scene } from "./Scene"
 import { setGl } from "./GL"
@@ -21,10 +21,16 @@ import { Color } from "./math/Color"
 import { Gradient } from "./Gradient"
 import { Image } from "./texture/Image"
 import { CanvasContainer } from "./utils/CanvasContainer"
+import { LibraryWindow } from "./ui/libraryWindow/LibraryWindow"
+import { Library } from "./library/Library"
+import { Injection } from "./utils/Injection"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
 setGl(context)
+
+const library = new Library()
+Injection.set(Library, library)
 
 const renderer = new Renderer(canvas)
 // Fits the viewport
@@ -50,6 +56,8 @@ const wireframe = (() => {
     const geometry = new WireframeGeometry()
     const material = new HeightMapMaterial()
 
+    library.add(material)
+
     const gradient = new Gradient([
         { t: 0, color: Color.red() },
         { t: 0.5, color: Color.green() },
@@ -63,7 +71,7 @@ const wireframe = (() => {
         height: -0.5
     })
 
-    return new Object({
+    return new SceneObject({
         name: "Wireframe",
         geometry,
         material
@@ -91,7 +99,7 @@ const wireframeUnder = (() => {
         height: -0.5
     })
 
-    return new Object({
+    return new SceneObject({
         name: "Wireframe Back",
         geometry,
         material
@@ -102,7 +110,7 @@ const monkey = (() => {
     const geometry = ObjLoader.load(monkeyObj)
     const material = new BlinnPhongMaterial()
 
-    return new Object({
+    return new SceneObject({
         name: "Monkey",
         geometry,
         material
@@ -128,7 +136,11 @@ function render() {
 render()
 
 // Render your React component instead
-const root = createRoot(document.getElementById('app')!)
-root.render(<Editor />)
+const editorRoot = createRoot(document.getElementById('editor')!)
+editorRoot.render(<Editor />)
+
+// Render your React component instead
+const libraryRoot = createRoot(document.getElementById('library')!)
+libraryRoot.render(<LibraryWindow library={library} />)
 
 new CanvasContainer(document.querySelector("#canvas-container")!)

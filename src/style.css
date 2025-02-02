@@ -5,10 +5,14 @@ canvas {
 
 body {
   display: grid;
+  grid-template-areas:
+    c e
+    l e;
   grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
 }
 
-#app {
+#editor {
   height: 100%;
   overflow: hidden;
 }

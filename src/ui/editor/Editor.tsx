@@ -1,5 +1,6 @@
 import { RenderingContext } from "../../RenderingContext";
 import { CameraEditor } from "../cameraEditor/CameraEditor";
+import { ContextualMenuRenderer } from "../contextualMenuRenderer/ContextualMenuRenderer";
 import { SceneEditor } from "../sceneEditor/SceneEditor";
 import { SelectionEditor } from "../selectionEditor/SelectionEditor";
 import "./Editor.scss";
@@ -19,5 +20,7 @@ export function Editor(props: Props) {
 			<CameraEditor camera={camera} />
 			<SceneEditor scene={scene} />
 		</div>
+
+		<ContextualMenuRenderer />
 	</div>
 }

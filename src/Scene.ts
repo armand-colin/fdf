@@ -1,10 +1,10 @@
 import { Emitter } from "@niloc/utils";
-import { Object } from "./Object";
+import { SceneObject } from "./SceneObject";
 import { useObjectField } from "./hooks/useObjectField";
 
 export class Scene extends Emitter<{ change: void }> {
 
-    private _objects: Object[] = []
+    private _objects: SceneObject[] = []
 
     constructor() {
         super()
@@ -13,13 +13,13 @@ export class Scene extends Emitter<{ change: void }> {
     get objects() {
         return this._objects
     }
-    
-    add(object: Object) {
+
+    add(object: SceneObject) {
         this._objects.push(object)
         this.emit('change', undefined)
     }
 
-    remove(object: Object) {
+    remove(object: SceneObject) {
         const index = this._objects.indexOf(object)
         if (index ===-1)
             return

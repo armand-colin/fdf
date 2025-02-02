@@ -1,5 +1,5 @@
 import { MouseEvent, useEffect } from "react";
-import { Object } from "../../Object";
+import { SceneObject } from "../../SceneObject";
 import { Scene } from "../../Scene";
 import { Checkbox } from "../checkbox/Checkbox";
 import { Section } from "../section/Section";
@@ -15,10 +15,16 @@ type Props = {
 
 export function SceneEditor(props: Props) {
 	const objects = props.scene.useObjects()
-	const selection = Injection.get(SelectionController).useObject()
+	const selection = Injection.get(SelectionController).useSelection()
 
-	function onDelete(object: Object) {
+	function onDelete(object: SceneObject) {
 		props.scene.remove(object)
+	}
+
+	function onAdd() {
+		const object = new SceneObject()
+		props.scene.add(object)
+		Injection.get(SelectionController).setSelection(object)
 	}
 
 	useEffect(() => {
@@ -30,6 +36,7 @@ export function SceneEditor(props: Props) {
 		className="SceneEditor"
 		label="Scene"
 	>
+		<Button icon="add" onClick={onAdd} label="Add" />
 		<div className="SceneObjectRows">
 			{
 				objects.map(object => <SceneObjectRow
@@ -44,7 +51,7 @@ export function SceneEditor(props: Props) {
 }
 
 function SceneObjectRow(props: {
-	object: Object,
+	object: SceneObject,
 	selected: boolean,
 	onDelete: () => void
 }) {
@@ -55,7 +62,7 @@ function SceneObjectRow(props: {
 	}, [enabled])
 
 	function onClick() {
-		Injection.get(SelectionController).setObject(props.object)
+		Injection.get(SelectionController).setSelection(props.object)
 	}
 
 	function onDelete(e: MouseEvent) {

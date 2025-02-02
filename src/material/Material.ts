@@ -4,8 +4,12 @@ import { Geometry } from "../geometry/Geometry"
 import { Shader } from "../Shader"
 import { useObjectField } from "../hooks/useObjectField"
 import { Transform } from "../Transform"
+import { Resource } from "../library/Resource"
+import { nanoid } from "nanoid"
 
-export abstract class Material<State = any> extends Emitter<{ change: void }> {
+export abstract class Material<State = any> extends Emitter<{ change: void }> implements Resource {
+
+    readonly id = nanoid()
 
     abstract name: string
 

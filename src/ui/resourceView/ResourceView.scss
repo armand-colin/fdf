@@ -1,0 +1,14 @@
+.ResourceView {
+    padding: 4px 6px;
+    background: var(--color-input);
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    
+    &:hover {
+        outline: 2px solid var(--color-outline);
+    }
+    &:active {
+        outline: 2px solid var(--color-active);
+    }
+}

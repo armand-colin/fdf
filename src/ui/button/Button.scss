@@ -1,7 +1,7 @@
 .Button {
     height: 24px;
     display: flex;
-    gap: 4px;
+    gap: 6px;
     align-items: center;
     border-radius: 4px;
     background: var(--color-input);
@@ -17,8 +17,8 @@
         color: var(--color-text-contrast);
     }
 
-    &[data-label="false"] {
-        padding: 0;
+    .Icon {
+        margin: 0 -6px;
     }
 
     &:hover {
