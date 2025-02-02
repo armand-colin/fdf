@@ -1,10 +1,22 @@
 canvas {
-  outline: 1px solid lightgrey;
   width: 100%;
   aspect-ratio: 16/9;
+  background: lightgrey;
 }
 
 body {
   display: grid;
   grid-template-columns: 1fr 400px;
+}
+
+#canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
 }
