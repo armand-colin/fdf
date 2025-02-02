@@ -44,7 +44,6 @@ export namespace RenderingContext {
     }
 
     export function render() {
-        console.log("Ask render", renderRequested)
         if (renderRequested)
             return
 

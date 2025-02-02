@@ -1,3 +1,32 @@
 .Vec3NumberInput {
-    
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: start;
+
+    > label {
+        padding: 4px 6px;
+        border-radius: 4px;
+        background: var(--color-label);
+    }
+
+    > section {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+
+        > * label {
+            width: 24px;
+        }
+
+        > *:nth-child(1) label {
+            color: var(--color-red);
+        }
+        > *:nth-child(2) label {
+            color: var(--color-green);
+        }
+        > *:nth-child(3) label {
+            color: var(--color-blue);
+        }
+    }
 }

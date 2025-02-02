@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { Gradient } from "../../../Gradient";
+import { useUpdate } from "../../../hooks/useUpdate";
 import { HeightMapMaterial } from "../../../material/HeightMapMaterial";
-import { RenderingContext } from "../../../RenderingContext";
+import { Texture } from "../../../texture/Texture";
+import { GradientInput } from "../../gradientInput/GradientInput";
 import { NumberInput } from "../../numberInput/NumberInput";
 import "./LineMaterialEditor.scss";
 
@@ -9,15 +11,17 @@ type Props = {
 }
 
 export function LineMaterialEditor(props: Props) {
-	const { height } = props.material.useState()
+	const { height, gradient } = props.material.useState()
+	const update = useUpdate()
 
-	useEffect(() => {
-		props.material.on('change', RenderingContext.render)
-
-		return () => {
-			props.material.off('change', RenderingContext.render)
+	function onGradientChange(gradient: Gradient) {
+		if (props.material.state.gradient) {
+			props.material.state.gradient.setData(gradient)
+			update()
+		} else {
+			props.material.setState({ gradient: new Texture(gradient) })
 		}
-	}, [props.material])
+	}
 
 	return <div className="LineMaterialEditor">
 		<NumberInput
@@ -25,5 +29,14 @@ export function LineMaterialEditor(props: Props) {
 			onChange={height => props.material.setState({ height })}
 			value={height}
 		/>
+		{
+			gradient && gradient.data instanceof Gradient ?
+				<GradientInput 
+					gradient={gradient.data}
+					label="Height Gradient"
+					onChange={onGradientChange}
+				/> :
+				undefined
+		}
 	</div>
 }

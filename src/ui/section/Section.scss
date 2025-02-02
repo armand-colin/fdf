@@ -1,0 +1,39 @@
+.Section {
+    border-radius: 4px;
+    background: var(--color-container);
+    outline: 2px solid var(--color-outline);
+
+    &[data-open="false"] {
+        > article {
+            display: none;
+        }
+    }
+
+    &[data-open="true"] {
+        > label {
+            border-radius: 4px 4px 0 0;
+        }
+
+        > label .Icon {
+            transform: rotate(0.5turn);
+        }
+    }
+
+    > label {
+        cursor: pointer;
+        display: flex;
+        width: 100%;
+        padding: 0;
+        align-items: center;
+        background: var(--color-label);
+        border-radius: 4px;
+    }
+
+    > article {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: start;
+    }
+}

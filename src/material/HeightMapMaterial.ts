@@ -4,7 +4,7 @@ import { GL } from "../GL"
 import { Vec2 } from "../math/Vec2"
 import { Vec3 } from "../math/Vec3"
 import { Shader } from "../Shader"
-import { Texture } from "../Texture"
+import { Texture } from "../texture/Texture"
 import { Material } from "./Material"
 
 type State = {
@@ -15,7 +15,7 @@ type State = {
 
 export class HeightMapMaterial extends Material<State> {
 
-    readonly name = "Height Map Material"
+    readonly name = "Height Map"
 
     protected readonly indexBuffer: WebGLBuffer
 
@@ -42,7 +42,7 @@ export class HeightMapMaterial extends Material<State> {
         // Get all locations
         this.projectionLocation = this.shader.getUniformLocation("u_projection")
         this.viewLocation = this.shader.getUniformLocation("u_view")
-        this.heightMapLocation = this.shader.getUniformLocation("u_texture")
+        this.heightMapLocation = this.shader.getUniformLocation("u_height_map")
         this.gradientLocation = this.shader.getUniformLocation("u_gradient")
         this.heightLocation = this.shader.getUniformLocation("u_height")
 
@@ -72,17 +72,11 @@ export class HeightMapMaterial extends Material<State> {
         this.shader.setUniform(this.viewLocation, camera.view)
         this.shader.setUniform(this.heightLocation, this.state.height)
 
-        if (this.state.heightMap) {
-            GL.activeTexture(GL.TEXTURE0)
-            GL.uniform1i(this.heightMapLocation, 0)
-            this.state.heightMap.bind()
-        }
+        if (this.state.heightMap)
+            this.state.heightMap.bind(this.heightMapLocation, 0)
 
-        if (this.state.gradient) {
-            GL.activeTexture(GL.TEXTURE1)
-            GL.uniform1i(this.gradientLocation, 1)
-            this.state.gradient.bind()
-        }
+        if (this.state.gradient)
+            this.state.gradient.bind(this.gradientLocation, 1)
 
         // Load indexBuffer
         GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer)

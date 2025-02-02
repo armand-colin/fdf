@@ -7,7 +7,9 @@ import { Shader } from "../Shader";
 import { Material } from "./Material";
 
 type State = {
-    color: Color
+    color: Color,
+    lightDirection: Vec3,
+
 }
 
 export class BlinnPhongMaterial extends Material<State> {
@@ -16,12 +18,16 @@ export class BlinnPhongMaterial extends Material<State> {
 
     protected readonly positionLocation: GLint
     protected readonly positionBuffer: WebGLBuffer
+    
+    protected readonly normalLocation: GLint
+    protected readonly normalBuffer: WebGLBuffer
 
     protected readonly indexBuffer: WebGLBuffer
 
     protected readonly projectionLocation: WebGLUniformLocation | null
     protected readonly viewLocation: WebGLUniformLocation | null
     protected readonly colorLocation: WebGLUniformLocation | null
+    protected readonly lightDirectionLocation: WebGLUniformLocation | null
 
     constructor() {
         const shader = Shader.fromSource(vertex, fragment)
@@ -33,16 +39,21 @@ export class BlinnPhongMaterial extends Material<State> {
         this.positionLocation = this.shader.getAttributeLocation("a_position")
         this.positionBuffer = GL.createBuffer()
 
+        this.normalLocation = this.shader.getAttributeLocation("a_normal")
+        this.normalBuffer = GL.createBuffer()
+
         this.indexBuffer = GL.createBuffer()
 
         this.projectionLocation = this.shader.getUniformLocation("u_projection")
         this.viewLocation = this.shader.getUniformLocation("u_view")
         this.colorLocation = this.shader.getUniformLocation("u_color")
+        this.lightDirectionLocation = this.shader.getUniformLocation("u_light_direction")
     }
 
     protected override makeState(): State {
         return {
-            color: Color.red()
+            color: Color.red(),
+            lightDirection: new Vec3(0.3, 1, 0.4)
         }
     }
 
@@ -54,6 +65,7 @@ export class BlinnPhongMaterial extends Material<State> {
         this.shader.setUniform(this.projectionLocation, camera.projection.matrix)
         this.shader.setUniform(this.viewLocation, camera.view)
         this.shader.setUniform(this.colorLocation, this.state.color)
+        this.shader.setUniform(this.lightDirectionLocation, this.state.lightDirection.normalized())
 
         // Load indexBuffer
         GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
@@ -72,6 +84,16 @@ export class BlinnPhongMaterial extends Material<State> {
             GL.STATIC_DRAW
         )
         GL.vertexAttribPointer(this.positionLocation, Vec3.size, GL.FLOAT, false, 0, 0)
+
+        // Load normals
+        GL.enableVertexAttribArray(this.normalLocation)
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.normalBuffer)
+        GL.bufferData(
+            GL.ARRAY_BUFFER,
+            geometry.mesh.normals,
+            GL.STATIC_DRAW
+        )
+        GL.vertexAttribPointer(this.normalLocation, Vec3.size, GL.FLOAT, false, 0, 0)
 
         // Draw elements
         const primitiveType = geometry.primitive
@@ -96,8 +118,12 @@ uniform mat4 u_projection;
 uniform mat4 u_view;
 
 in vec4 a_position;
+in vec3 a_normal;
+
+out vec3 o_normal;
 
 void main() {
+    o_normal = a_normal;
     gl_Position = u_projection * u_view * a_position;
 }
 `
@@ -106,10 +132,15 @@ const fragment = /*glsl*/`#version 300 es
 precision highp float;
  
 uniform vec4 u_color;
+uniform vec3 u_light_direction;
 
+in vec3 o_normal;
 out vec4 outColor;
  
 void main() {
+    vec3 normal = normalize(o_normal);
+    float light = dot(normal, u_light_direction);
     outColor = u_color;
+    outColor.rgb *= light;
 }
 `

@@ -1,0 +1,26 @@
+.Button {
+    height: 24px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    border-radius: 4px;
+    background: var(--color-input);
+    color: var(--color-text);
+    border: none;
+    outline: none;
+    padding: 0 6px;
+    cursor: pointer;
+    font-family: "JetBrainsSemiBold";
+
+    &[data-contrast="true"] {
+        background: var(--color-contrast);
+        color: var(--color-text-contrast);
+    }
+
+    &:hover {
+        outline: 2px solid var(--color-outline);
+    }
+    &:active {
+        outline: 2px solid var(--color-outline-active);
+    }
+}

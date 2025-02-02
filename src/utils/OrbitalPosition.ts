@@ -61,16 +61,6 @@ export class OrbitalPosition extends Emitter<{ change: void }> {
         this.rotation.x = -xAngle
         this.rotation.z = 0
 
-        console.log(
-            'Set',
-            {
-                y,
-                xzDistance
-            },
-            this.position.toString(),
-            this.rotation.toString()
-        )
-
         this.emit('change', undefined)
     }
 

@@ -156,7 +156,8 @@ export class WireframeGeometry extends Geometry<State> {
         return {
             positions,
             uvs,
-            indices
+            indices,
+            normals: new Float32Array()
         }
     }
 

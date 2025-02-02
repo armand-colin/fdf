@@ -1,3 +1,33 @@
 .SceneEditor {
-    
+    .SceneObjectRows {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .SceneObjectRow {
+        display: flex;
+        width: 100%;
+        cursor: pointer;
+        align-items: center;
+        padding-left: 6px;
+        border-radius: 4px;
+
+        &:hover {
+            background: var(--color-label);
+        }
+
+        > p {
+            display: inline-block;
+            flex: 1;
+        }
+        > .Checkbox {
+            flex-shrink: 0;
+        }
+
+        &[data-selected="true"] {
+            outline: 2px solid var(--color-outline);
+        }
+    }
 }

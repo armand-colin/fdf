@@ -29,6 +29,8 @@ export class Renderer {
     render(camera: Camera, scene: Scene) {
         // Set the viewport
         GL.viewport(0, 0, this.canvas.width, this.canvas.height)
+        GL.enable(GL.CULL_FACE)
+        GL.enable(GL.DEPTH_TEST)
 
         // Clear the canvas
         GL.clearColor(0, 0, 0, 0)

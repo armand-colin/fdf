@@ -1,3 +1,9 @@
 .OrbitalEditor {
-    
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    > label {
+        align-self: start;
+    }
 }

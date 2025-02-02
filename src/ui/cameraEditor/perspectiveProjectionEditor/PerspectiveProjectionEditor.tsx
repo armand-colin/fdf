@@ -16,7 +16,6 @@ export function PerspectiveProjectionEditor(props: Props) {
 	} = props.projection.useState()
 
 	return <div className="PerspectiveProjectionEditor">
-		<p>Perspective</p>
 		<NumberInput
 			label="Far"
 			max={100_000}

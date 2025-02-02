@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+body {
+    background: var(--color-background);
+    color: var(--color-text);
+    font: 14px/16px "JetBrainsRegular";
+}
+
+label {
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-family: "JetBrainsSemiBold";
+    user-select: none;
+    background: var(--color-label);
+}

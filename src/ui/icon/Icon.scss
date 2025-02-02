@@ -1,0 +1,19 @@
+.Icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    svg *[stroke] {
+        stroke: currentColor;
+    }
+
+    svg *[fill] {
+        fill: currentColor;
+    }
+
+}

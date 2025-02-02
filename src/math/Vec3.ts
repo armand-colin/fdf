@@ -16,6 +16,7 @@ export class Vec3 {
 
     static right() { return new Vec3(1, 0, 0) }
     static forward() { return new Vec3(0, 0, 1) }
+    static up() { return new Vec3(0, 1, 0) }
 
     constructor(
         x: number = 0,
@@ -44,6 +45,24 @@ export class Vec3 {
     }
     set z(value: number) {
         this.buffer[2] = value
+    }
+
+    get sqMagnitude() {
+        return (this.x * this.x) + (this.y * this.y) + (this.z * this.z)
+    }
+
+    get magnitude() {
+        return Math.sqrt(this.sqMagnitude)
+    }
+
+    normalized(): Vec3 {
+        const magnitude = this.magnitude
+
+        return new Vec3(
+            this.x / magnitude,
+            this.y / magnitude,
+            this.z / magnitude
+        )
     }
 
     clone() {

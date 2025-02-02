@@ -1,0 +1,13 @@
+@font-face {
+    font-family: "JetBrainsRegular";
+    src: url("../assets/fonts/JetBrainsMono-Regular.ttf");
+}
+
+@font-face {
+    font-family: "JetBrainsSemiBold";
+    src: url("../assets/fonts/JetBrainsMono-SemiBold.ttf");
+}
+
+body {
+    font-family: "JetBrainsRegular", monospace;
+}

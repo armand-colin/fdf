@@ -1,8 +1,9 @@
 import { GL } from "./GL";
 import { Color } from "./math/Color";
 import { Mat4 } from "./math/Mat4";
+import { Vec3 } from "./math/Vec3";
 
-type Uniform = Mat4 | Color | number
+type Uniform = Mat4 | Color | Vec3 | number
 
 export class Shader {
 
@@ -95,6 +96,8 @@ export class Shader {
             GL.uniformMatrix4fv(location, false, value.buffer)
         else if (value instanceof Color)
             GL.uniform4f(location, value.r, value.g, value.b, value.a)
+        else if (value instanceof Vec3)
+            GL.uniform3f(location, value.x, value.y, value.z)
         else if (typeof value === "number")
             GL.uniform1f(location, value)
     }

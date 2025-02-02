@@ -1,6 +1,7 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import "./NumberInput.scss";
 import { Mathf } from "../../math/Mathf";
+import { Input } from "../input/Input";
 
 type Props = {
 	min?: number,
@@ -74,11 +75,11 @@ export function NumberInput(props: Props) {
 		props.onChange(clamped)
 	}
 
-	function onChange(e: ChangeEvent<HTMLInputElement>) {
-		const value = Number.parseFloat(e.target.value)
+	function onChange(text: string) {
+		const value = Number.parseFloat(text)
 
-		if (Number.isNaN(value) || e.target.value === "-0")
-			setValue(e.target.value)
+		if (Number.isNaN(value) || text === "-0")
+			setValue(text)
 		else
 			set(value)
 	}
@@ -91,18 +92,17 @@ export function NumberInput(props: Props) {
 			step: props.step
 		})
 
-		if (dragController.current) 
+		if (dragController.current)
 			dragController.current.stop()
 
 		dragController.current = controller
 	}
 
 	return <div className="NumberInput">
-		<label
-			onMouseDown={onMouseDown}
-		>{props.label}</label>
-		<input
-			type="number"
+		<label onMouseDown={onMouseDown}>
+			{props.label}
+		</label>
+		<Input
 			onChange={onChange}
 			value={value}
 			min={props.min}

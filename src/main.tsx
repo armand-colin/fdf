@@ -1,3 +1,4 @@
+import "./style/index.scss"
 import "./style.css"
 import { HeightMapMaterial } from "./material/HeightMapMaterial"
 import { Object } from "./Object"
@@ -10,11 +11,17 @@ import { Editor } from "./ui/editor/Editor"
 import { RenderingContext } from "./RenderingContext"
 import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
-import { Texture } from "./Texture"
+import { Texture } from "./texture/Texture"
 import { WireframeGeometry } from "./geometry/WireframeGeometry"
 import { StaticGeometry } from "./geometry/StaticGeometry"
 import monkeyObj from "./assets/monkey.obj?raw"
+import cubeObj from "./assets/cube.obj?raw"
 import { BlinnPhongMaterial } from "./material/BlinnPhongMaterial"
+import { ObjLoader } from "./utils/ObjLoader"
+import { PlaneGeometry } from "./geometry/PlaneGeometry"
+import { Color } from "./math/Color"
+import { Gradient } from "./Gradient"
+import { Image } from "./texture/Image"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -35,41 +42,70 @@ RenderingContext.init({
     scene,
 })
 
+const heightMapData = Image.fromUrl(face)
+const heightMap = new Texture(heightMapData)
+
+heightMapData.on('load', RenderingContext.render)
 
 const wireframe = (() => {
     const geometry = new WireframeGeometry()
     const material = new HeightMapMaterial()
 
-    const gradient = new ImageData(3, 1)
-    gradient.data.set([255, 0, 0, 255], 0)
-    gradient.data.set([0, 255, 0, 255], 4)
-    gradient.data.set([0, 0, 255, 255], 8)
+    const gradient = new Gradient([
+        { t: 0, color: Color.red() },
+        { t: 0.5, color: Color.green() },
+        { t: 1, color: Color.blue() },
+    ])
 
     const gradientTexture = new Texture(gradient)
     material.setState({
         gradient: gradientTexture,
-        height: 1
+        heightMap,
+        height: -0.5
     })
 
-    Texture.fromImage(face).then(texture => {
-        material.setState({ heightMap: texture })
-        render()
-    })
-
-    return new Object({ 
+    return new Object({
         name: "Wireframe",
-        geometry, 
-        material 
+        geometry,
+        material
+    })
+})()
+
+const wireframeUnder = (() => {
+    const geometry = new PlaneGeometry()
+    const material = new HeightMapMaterial()
+
+    const gradient = new Gradient([
+        { t: 0, color: Color.red() },
+        { t: 0.5, color: Color.green() },
+        { t: 1, color: Color.blue() },
+    ])
+
+    const gradientTexture = new Texture(gradient)
+
+    const heightMapData = Image.fromUrl(face)
+    const heightMap = new Texture(heightMapData)
+
+    material.setState({
+        gradient: gradientTexture,
+        heightMap,
+        height: -0.5
+    })
+
+    return new Object({
+        name: "Wireframe Back",
+        geometry,
+        material
     })
 })()
 
 const monkey = (() => {
-    const geometry = StaticGeometry.fromObj(monkeyObj)
+    const geometry = ObjLoader.load(monkeyObj)
     const material = new BlinnPhongMaterial()
 
     return new Object({
         name: "Monkey",
-        geometry, 
+        geometry,
         material
     })
 })()
@@ -79,7 +115,11 @@ const monkey = (() => {
 //     render()
 // })
 
+wireframe.enabled = false
+monkey.enabled = false
+
 scene.add(wireframe)
+scene.add(wireframeUnder)
 scene.add(monkey)
 
 function render() {

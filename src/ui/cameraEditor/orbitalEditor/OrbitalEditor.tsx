@@ -17,7 +17,7 @@ export function OrbitalEditor(props: Props) {
 	} = props.orbital.useState()
 
 	return <div className="OrbitalEditor">
-		<p>Orbital Position</p>
+		<label>Orbital Position</label>
 		<NumberInput
 			label="Distance"
 			min={0}

@@ -6,6 +6,9 @@ import { GeometryPrimitive } from "../../geometry/GeometryPrimitive";
 import { WireframeGeometry } from "../../geometry/WireframeGeometry";
 import { WireframeGeometryEditor } from "./wireframeGeometryEditor/WireframeGeometryEditor";
 import { RenderingContext } from "../../RenderingContext";
+import { PlaneGeometry } from "../../geometry/PlaneGeometry";
+import { PlaneGeometryEditor } from "./planeGeometryEditor/PlaneGeometryEditor";
+import { Section } from "../section/Section";
 
 type Props = {
 	geometry: Geometry
@@ -26,21 +29,24 @@ export function GeometryEditor(props: Props) {
 			case GeometryPrimitive.Lines:
 				return <>{mesh.indices.length / 2} lines</>
 		}
-		return <></>
 	}, [props.geometry.primitive, mesh.indices])
 
 	const inner = useMemo(() => {
 		if (props.geometry instanceof WireframeGeometry)
 			return <WireframeGeometryEditor geometry={props.geometry} />
+		if (props.geometry instanceof PlaneGeometry)
+			return <PlaneGeometryEditor geometry={props.geometry} />
 
 		return <></>
 	}, [props.geometry])
 
-	return <div className="GeometryEditor">
-		<p>Geometry</p>
+	return <Section 
+		className="GeometryEditor"
+		label="Geometry"
+	>
 		<p>Vertices: {mesh.positions.length / Vec3.size}</p>
 		<p>Indices: {mesh.indices.length}</p>
 		<p>Elements: {elementCount}</p>
 		{inner}
-	</div>
+	</Section>
 }

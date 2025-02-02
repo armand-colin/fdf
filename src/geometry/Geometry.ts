@@ -79,7 +79,7 @@ export abstract class Geometry<State = {}> extends Emitter<{ change: void }> {
         })
     }
 
-    abstract bake(): Mesh
-    abstract makeState(): State
+    protected abstract bake(): Mesh
+    protected abstract makeState(): State
 
 }

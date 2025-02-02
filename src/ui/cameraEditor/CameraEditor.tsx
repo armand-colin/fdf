@@ -7,6 +7,8 @@ import { OrbitalEditor } from "./orbitalEditor/OrbitalEditor";
 import { OrbitalPosition } from "../../utils/OrbitalPosition";
 import { useInstance } from "../../hooks/useInstance";
 import { ProjectionEditor } from "./projectionEditor/ProjectionEditor";
+import { Section } from "../section/Section";
+import { Button } from "../button/Button";
 
 type Props = {
 	camera: Camera
@@ -24,34 +26,40 @@ export function CameraEditor(props: Props) {
 		orbital.off('change', RenderingContext.render)
 	})
 
-	return <div className="CameraEditor">
+	return <Section
+		label="Camera"
+		className="CameraEditor"
+	>
 		<ProjectionSelect camera={props.camera} />
 		<ProjectionEditor projection={projection} />
 		<OrbitalEditor orbital={orbital} />
-	</div>
+	</Section>
 }
 
-const projections = [
-	PerspectiveProjection,
-	OrthographicProjection
-]
+const projections = [{
+	label: "Perspective",
+	class: PerspectiveProjection,
+}, {
+	label: "Orthographic",
+	class: OrthographicProjection
+}]
 
 function ProjectionSelect(props: { camera: Camera }) {
-	function setCamera(projectionClass: (typeof projections)[number]) {
-		const projection = new projectionClass(RenderingContext.state.canvas)
-		console.log("At build", projection.state)
+	function setProjection(projectionItem: (typeof projections)[number]) {
+		const projection = new projectionItem.class(RenderingContext.state.canvas)
 		RenderingContext.state.camera.projection = projection
 		RenderingContext.render()
 	}
 
-	return projections.map(cameraClass => {
-		return <div
-			className="CameraSelect"
-			key={cameraClass.name}
-			onClick={() => setCamera(cameraClass)}
-			data-selected={props.camera instanceof cameraClass}
-		>
-			{cameraClass.name}
-		</div>
-	})
+	return <div className="ProjectionSelect">
+		{
+			projections.map(projectionItem => {
+				return <Button
+					label={projectionItem.label}
+					onClick={() => setProjection(projectionItem)}
+					contrast={!!(props.camera.projection instanceof projectionItem.class)}
+				/>
+			})
+		}
+	</div>
 }

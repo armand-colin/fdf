@@ -1,6 +1,33 @@
 .NumberInput {
+    display: flex;
+
     label {
         user-select: none;
         cursor: ew-resize;
+        height: 24px;
+        padding: 4px 6px 4px 6px;
+        border-radius: 4px 0 0 4px;
+        background: var(--color-label);
+        position: relative;
+        display: block;
+        flex-shrink: 0;
+
+        &::after {
+            position: absolute;
+            height: 100%;
+            width: 4px;
+            background: var(--color-label);
+            content: "";
+            display: block;
+            left: calc(100%);
+            top: 0;
+            z-index: 0;
+        }
+    }
+
+    >.Input {
+        position: relative;
+        z-index: 1;
+        flex: 1;
     }
 }

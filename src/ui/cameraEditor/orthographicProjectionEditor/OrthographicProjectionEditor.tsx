@@ -10,13 +10,6 @@ export function OrthographicProjectionEditor(props: Props) {
 	const { zoom, far, near } = props.projection.useState()
 
 	return <div className="OrthographicProjectionEditor">
-		<p>Orthographic</p>
-		<NumberInput 
-			label="Zoom"
-			onChange={zoom => props.projection.setState({ zoom })}
-			min={0.1}
-			value={zoom}
-		/>
 		<NumberInput 
 			label="Far"
 			onChange={far => props.projection.setState({ far })}
@@ -28,6 +21,12 @@ export function OrthographicProjectionEditor(props: Props) {
 			onChange={near => props.projection.setState({ near })}
 			min={0}
 			value={near}
+		/>
+		<NumberInput 
+			label="Zoom"
+			onChange={zoom => props.projection.setState({ zoom })}
+			min={0.1}
+			value={zoom}
 		/>
 	</div>
 }

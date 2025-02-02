@@ -1,6 +1,9 @@
 import { useMemo } from "react";
-import { Texture } from "../../Texture";
+import { Texture } from "../../texture/Texture";
 import "./TextureEditor.scss";
+import { Image } from "../../texture/Image";
+import { Gradient } from "../../Gradient";
+import { GradientInput } from "../gradientInput/GradientInput";
 
 type Props = {
 	label: string,
@@ -13,19 +16,25 @@ export function TextureEditor(props: Props) {
 		{
 			props.texture === null ?
 				<small>Aucune texture</small> :
-				<TextureRenderer texture={props.texture} />
+				<TextureEditorNotNull texture={props.texture} />
 		}
 	</div>
 }
 
-function TextureRenderer(props: { texture: Texture }) {
-	// TODO: add hook
-	const data = props.texture.data
-	
+function TextureEditorNotNull(props: { texture: Texture }) {
+	const textureData = props.texture.useData()
+
 	const inner = useMemo(() => {
-		if (data instanceof HTMLImageElement)
-			return <img src={data.src} />
-	}, [data])
+		if (textureData instanceof Image)
+			return <img src={textureData.image.src} />
+
+		if (textureData instanceof Gradient)
+			return <GradientInput
+				gradient={textureData}
+				label="Gradient"
+				onChange={gradient => props.texture.setData(gradient)}
+			/>
+	}, [textureData])
 
 	return <div className="TextureRenderer">
 		{inner}

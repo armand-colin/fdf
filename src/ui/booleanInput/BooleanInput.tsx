@@ -1,5 +1,5 @@
-import { ChangeEvent } from "react";
 import "./BooleanInput.scss";
+import { Checkbox } from "../checkbox/Checkbox";
 
 type Props = {
 	label: string,
@@ -9,16 +9,11 @@ type Props = {
 
 export function BooleanInput(props: Props) {
 
-	function onChange(e: ChangeEvent<HTMLInputElement>) {
-		props.onChange(e.target.checked)
-	}
-
 	return <div className="BooleanInput">
-		<label>{props.label}</label>
-		<input
-			type="checkbox"
-			checked={props.value}
-			onChange={onChange}
+		<label onClick={() => props.onChange(!props.value)}>{props.label}</label>
+		<Checkbox
+			value={props.value}
+			onChange={props.onChange}
 		/>
 	</div>
 }
