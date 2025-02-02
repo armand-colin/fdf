@@ -1,7 +1,8 @@
 .Section {
     border-radius: 4px;
     background: var(--color-container);
-    outline: 2px solid var(--color-outline);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.7);
+
 
     &[data-open="false"] {
         > article {
@@ -23,7 +24,8 @@
         position: fixed;
         left: var(--x);
         top: var(--y);
-        width: 300px;
+        width: 350px;
+        z-index: 5;
     }
 
     &__float-button {
