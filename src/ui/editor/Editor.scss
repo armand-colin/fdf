@@ -1,8 +1,14 @@
 .Editor {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: 100%;
-    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 300px 300px;
+    padding: 12px;
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+        overflow-y: auto;
+        padding: 12px;
+    }
 }

@@ -12,8 +12,12 @@ export function Editor(props: Props) {
 	const { camera, scene } = RenderingContext.useState()
 
 	return <div className="Editor">
-		<CameraEditor camera={camera} />
-		<SceneEditor scene={scene} />
-		<SelectionEditor />
+		<div className="Editor__column">
+			<SelectionEditor />
+		</div>
+		<div className="Editor__column">
+			<CameraEditor camera={camera} />
+			<SceneEditor scene={scene} />
+		</div>
 	</div>
 }

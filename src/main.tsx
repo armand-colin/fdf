@@ -13,15 +13,14 @@ import { OrthographicProjection } from "./camera/OrthographicProjection"
 import { Camera } from "./camera/Camera"
 import { Texture } from "./texture/Texture"
 import { WireframeGeometry } from "./geometry/WireframeGeometry"
-import { StaticGeometry } from "./geometry/StaticGeometry"
 import monkeyObj from "./assets/monkey.obj?raw"
-import cubeObj from "./assets/cube.obj?raw"
 import { BlinnPhongMaterial } from "./material/BlinnPhongMaterial"
 import { ObjLoader } from "./utils/ObjLoader"
 import { PlaneGeometry } from "./geometry/PlaneGeometry"
 import { Color } from "./math/Color"
 import { Gradient } from "./Gradient"
 import { Image } from "./texture/Image"
+import { CanvasContainer } from "./utils/CanvasContainer"
 
 const canvas = document.body.querySelector("canvas")!
 const context = canvas.getContext("webgl2")!
@@ -131,3 +130,5 @@ render()
 // Render your React component instead
 const root = createRoot(document.getElementById('app')!)
 root.render(<Editor />)
+
+new CanvasContainer(document.querySelector("#canvas-container")!)

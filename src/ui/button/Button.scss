@@ -17,6 +17,10 @@
         color: var(--color-text-contrast);
     }
 
+    &[data-label="false"] {
+        padding: 0;
+    }
+
     &:hover {
         outline: 2px solid var(--color-outline);
     }
