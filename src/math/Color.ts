@@ -4,6 +4,7 @@ export class Color {
 
     readonly buffer
 
+    static readonly byteSize = 4 * 4
     static readonly size = 4
     readonly size = 4
 

@@ -20,6 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "jsx": "react-jsx",
+    "types": ["@webgpu/types"],
     "paths": {
       "@/*": ["./src/*"]
     }

@@ -1,10 +1,9 @@
-import { Geometry } from "../geometry/Geometry";
 import { IndicesArray } from "../geometry/IndicesArray";
-import { StaticGeometry } from "../geometry/StaticGeometry";
+import { Mesh } from "../geometry/Mesh";
 
 export namespace ObjLoader {
 
-    export function load(objText: string): StaticGeometry {
+    export function load(objText: string): Mesh {
         const v = []
         const vn = []
         const vt = []
@@ -104,12 +103,13 @@ export namespace ObjLoader {
 
         const vertexCount = positions.length / 3
 
-        return new StaticGeometry(Geometry.Triangles, {
+        return {
             positions: new Float32Array(positions),
             uvs: new Float32Array(uvs),
             normals: new Float32Array(normals),
             indices: IndicesArray.fromVertexCount(vertexCount, indices)
-        })
+        }
     }
+
 
 }

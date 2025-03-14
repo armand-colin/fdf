@@ -218,6 +218,9 @@ export class Mat4 {
         ])
     }
 
+    static readonly byteSize = 16 * 4
+    static readonly size = 16
+
     readonly buffer: Float32Array
     readonly size = 16
 
